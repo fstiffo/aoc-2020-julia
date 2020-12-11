@@ -20,13 +20,13 @@ function newoccupied1(o, l)
         shiftl(shiftd(o)) + shiftr(shiftd(o)) +
         shiftr(shiftu(o)) + shiftl(shiftu(o))
     function rule(i)
-        # If a seat is empty (L) and there are no occupied seats adjacent to it,
+        # If a seat is empty (0) and there are no occupied seats adjacent to it,
         # the seat becomes occupied.
         if  o[i] == 0 && l[i] == 1 && ao[i] == 0
             1
-        # If a seat is occupied (#) and four or more seats adjacent to it are
+        # If a seat is occupied (1) and four or more seats adjacent to it are
         # also occupied, the seat becomes empty.
-    elseif o[i] > 0 && ao[i] > 3
+    elseif o[i] == 1 && ao[i] > 3
             0
         # Otherwise, the seat's state does not change.
         else
