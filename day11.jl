@@ -14,7 +14,7 @@ shiftd(a) = vcat(fill(0, (1, size(a)[2])), a[1:end-1, :])
 
 # Starting from occupied o, returns new occupied after one round of the rules
 # The seat layout is l
-function newoccupied(o, l)
+function newoccupied1(o, l)
     # Calculates how many adjacent are occupied for all the places
     ao = shiftl(o) + shiftr(o) + shiftu(o) + shiftd(o) +
         shiftl(shiftd(o)) + shiftr(shiftd(o)) +
@@ -39,7 +39,7 @@ end
 
 occupied = fill(0,size(input))
 while true
-    no = newoccupied(occupied,input)
+    no = newoccupied1(occupied,input)
     # Exit when further applications of the rules cause no seats to change state
     if no == occupied
         break
