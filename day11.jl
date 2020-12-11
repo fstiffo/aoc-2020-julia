@@ -12,7 +12,7 @@ shiftr(a) = hcat(fill(0, (size(a)[1], 1)), a[:, 1:end-1])
 shiftu(a) = vcat(a[2:end, :], fill(0, (1, size(a)[2])))
 shiftd(a) = vcat(fill(0, (1, size(a)[2])), a[1:end-1, :])
 
-# Starting from occupied l, returns new occupied after one round of the rules
+# Starting from occupied o, returns new occupied after one round of the rules
 # The seat layout is l
 function newoccupied(o, l)
     # Calculates how many adjacent are occupied for all the places
