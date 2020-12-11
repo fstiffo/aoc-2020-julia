@@ -38,13 +38,13 @@ function newoccupied(o, l)
 end
 
 occupied = fill(0,size(input))
-i = 0
 while true
-    n = newoccupied(occupied,input)
-    if n == occupied
+    no = newoccupied(occupied,input)
+    # Exit when further applications of the rules cause no seats to change state
+    if no == occupied
         break
     end
-    global occupied = n
+    global occupied = no
     global i = i + 1
 end
 
