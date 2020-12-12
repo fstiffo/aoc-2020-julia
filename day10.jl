@@ -2,14 +2,14 @@ using DelimitedFiles
 
 # Second Half
 
-input = readdlm("inputs/day10.txt", ' ', Int, '\n')
+puzzleinput = readdlm("inputs/day10.txt", ' ', Int, '\n')
 # Sort joltages
-input = sort(vec(input))
+puzzleinput = sort(vec(puzzleinput))
 
-# Add lowest (0) and highest (max jolt in input + 3) jolts
-input = append!([0], input)
-input = append!(input, [last(input) + 3])
-len = length(input)
+# Add lowest (0) and highest (max jolt in puzzle input + 3) jolts
+puzzleinput = append!([0], puzzleinput)
+puzzleinput = append!(puzzleinput, [last(puzzleinput) + 3])
+len = length(puzzleinput)
 
 # Create a diagonal matrix for the cartesian product of joltages
 # but where (i, j) value is
@@ -17,7 +17,7 @@ len = length(input)
 #   0 otherwise, no possible connection
 # Lower part of the diagonal matrix is set to 0 (condition j > i)
 paths = BitArray(
-    abs(input[i] - input[j]) < 4 && abs(input[i] - input[j]) != 0 && j > i
+    abs(puzzleinput[i] - puzzleinput[j]) < 4 && abs(puzzleinput[i] - puzzleinput[j]) != 0 && j > i
     for i = 1:len, j = 1:len
 )
 
