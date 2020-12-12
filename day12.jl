@@ -20,7 +20,7 @@ end
 ship = Ship([0, 0], [1, 0]) # The ship starts by facing east.
 
 # From a ship status s, handles an instruction i returning the new ship status
-function handle(s::Ship, i::Instr)
+function handle1(s::Ship, i::Instr)
     act = i.act
     val = i.val
     if act == 'L' || act == 'R'
@@ -40,6 +40,41 @@ function handle(s::Ship, i::Instr)
     Ship(s.pos + v, s.dir)
 end
 
-wherelead = reduce(handle, puzzleinput, init=ship)
+wherelead = reduce(handle1, puzzleinput, init = ship)
 
-print(sum(map(abs,wherelead.pos)))
+sum(map(abs, wherelead.pos))
+
+# Second Half
+
+#The waypoint starts 10 units east and 1 unit north relative to the ship.
+waypoint = ship.pos + [10, 1]
+
+# From a ship status s and a waypoint w,
+# handles an instruction i returning the new ship status and waypoint
+function handle2(sw::Tuple{Ship,Array{Int,1}}, i::Instr)
+    s = sw[1]
+    w = sw[2]
+    act = i.act
+    val = i.val
+    if act == 'L' || act == 'R'
+        # Right means clockwise rotation eq to negatives angles
+        val = (act == 'R' ? -1 : 1) * val
+        theta = deg2rad(val)
+        rotmat = [cos(theta) -sin(theta); sin(theta) cos(theta)]
+        rotmat = map(x -> trunc(Int, x), rotmat)
+        # Rotation matrix multiplication to perform rotation
+        return (s, rotmat * w)
+    end
+    if act == 'F'
+        v = val * w
+        s = Ship(s.pos + v, s.dir)
+    else
+        v = val * getindex(Actions, act)
+        w = w + v
+    end
+    (s, w)
+end
+
+wherelead = reduce(handle2, puzzleinput, init = (ship, waypoint))
+
+sum(map(abs, wherelead[1].pos))
