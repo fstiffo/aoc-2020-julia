@@ -31,10 +31,10 @@ function execute(cpu, prg)
         flg = prg[pc, 3]
 
         if flg
-            # If the code is going to execute an instruction already execute
+            # If the code is going to execute an instruction already executed
             # the code is in an infinite loop then exit execution loop
 
-            cpu.pc = -1 # Error code for loop
+            cpu.pc = -1 # Error code for infinite loop
             return cpu
         end
 
