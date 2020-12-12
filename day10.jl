@@ -49,7 +49,6 @@ sums = replace(sums, "32" => "4")
 # and the following has only 1 possible path.
 # Is not possible to have the "31" pattern, why? think it about it :)
 
-
 sums = collect.(sums)
 sums = map(x -> Int(x) - 48, sums)
 # Convert strings in array of integers
