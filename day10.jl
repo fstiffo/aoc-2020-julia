@@ -26,8 +26,6 @@ puzzleinput = append!(puzzleinput, [last(puzzleinput) + 3])
 # Add lowest (0) and highest (max jolt in puzzle input + 3) jolts
 
 len = length(puzzleinput)
-
-
 paths = BitArray(
     abs(puzzleinput[i] - puzzleinput[j]) < 4 &&
     abs(puzzleinput[i] - puzzleinput[j]) != 0 &&
