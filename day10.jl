@@ -2,28 +2,24 @@ using DelimitedFiles
 
 puzzleinput = readdlm("inputs/day10.txt", ' ', Int, '\n')
 puzzleinput = sort(vec(puzzleinput))
+# Sort joltages
 
 # First Half
 
-diffs =  vcat(puzzleinput,last(puzzleinput)+3) - vcat(0,puzzleinput)
+diffs = vcat(puzzleinput, last(puzzleinput) + 3) - vcat(0, puzzleinput)
 # The charging outlet has an effective rating of 0 jolts and
 # your device's built-in adapter is always 3 higher than the highest adapter
 
-diff1jolt = count(d->d==1,diffs)
+diff1jolt = count(d -> d == 1, diffs)
 # How many differences of 1 jolt
 
-diff3jolt = count(d->d==3,diffs)
+diff3jolt = count(d -> d == 3, diffs)
 # How many differences of 3 jolts
 
 diff1jolt * diff3jolt
 
+
 # Second Half
-
-
-
-
-# Sort joltages
-
 
 puzzleinput = append!([0], puzzleinput)
 puzzleinput = append!(puzzleinput, [last(puzzleinput) + 3])
