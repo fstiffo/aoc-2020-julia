@@ -4,6 +4,7 @@ puzzleinput = readdlm("inputs/day10.txt", ' ', Int, '\n')
 puzzleinput = sort(vec(puzzleinput))
 # Sort joltages
 
+
 # First Half
 
 diffs = vcat(puzzleinput, last(puzzleinput) + 3) - vcat(0, puzzleinput)
