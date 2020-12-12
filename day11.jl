@@ -51,7 +51,72 @@ while true
         break
     end
     global occupied = no
-    global i = i + 1
+end
+
+sum(occupied)
+
+# Second Half
+
+# Starting from occupied o, returns new occupied after one round of the rules
+# The seat layout is l
+function newoccupied2(o, l)
+    # Calculates how many first seats in each direction from place i
+    # are occupied
+    function sees(i)
+        ij = [0; 0]
+        ij[1] = i[1]
+        ij[2] = i[2]
+        m = [size(o)[1]; size(o)[2]]
+        occ = 0
+        for di = -1:1
+            for dj = -1:1
+                if di == 0 && dj == 0
+                    continue
+                end
+                d = [di; dj]
+                dij = ij + [di; dj]
+                while dij[1] > 0 && dij[2] > 0 && dij[1] <= m[1] && dij[2] <= m[2]
+                    if l[dij[1], dij[2]] == 1 # There is a seat in the layout
+                        if o[dij[1], dij[2]] == 1 # And is occupied
+                            occ = occ + 1
+                        end
+                        break
+                    end
+                    dij = dij + d
+                end
+            end
+        end
+        occ
+    end
+    # Calculates how many first seat in each direction are occupied
+    # for all the places
+    ao = map(sees, CartesianIndices(l))
+    function rule(i)
+        # If a seat is empty (0) and there are no occupied seats adjacent to it,
+        # the seat becomes occupied.
+        if o[i] == 0 && l[i] == 1 && ao[i] == 0
+            1
+            # If a seat is occupied (1) and five or more visible occupied seats are
+            # also occupied, the seat becomes empty.
+        elseif o[i] == 1 && ao[i] > 4
+            0
+            # Otherwise, the seat's state does not change.
+        else
+            o[i]
+        end
+    end
+    # Apply the rule to all the places
+    map(rule, CartesianIndices(l))
+end
+
+occupied = fill(0, size(puzzleinput))
+while true
+    no = newoccupied2(occupied, puzzleinput)
+    # Exit when further applications of the rules cause no seats to change state
+    if no == occupied
+        break
+    end
+    global occupied = no
 end
 
 sum(occupied)
