@@ -1,21 +1,21 @@
-using DelimitedFiles
-# First Half
-
 puzzleinput = map(collect, readlines("inputs/day11.txt"))
 puzzleinput = hcat(puzzleinput...)
 puzzleinput = map(c -> c == 'L' ? 1 : 0, puzzleinput)
 puzzleinput = permutedims(puzzleinput)
 
-# Shift left, right, up and down an array filling the new cells with 0
+
+# First Half
+
 shiftl(a) = hcat(a[:, 2:end], fill(0, (size(a)[1], 1)))
 shiftr(a) = hcat(fill(0, (size(a)[1], 1)), a[:, 1:end-1])
 shiftu(a) = vcat(a[2:end, :], fill(0, (1, size(a)[2])))
 shiftd(a) = vcat(fill(0, (1, size(a)[2])), a[1:end-1, :])
+# Shift left, right, up and down an array a filling the new cells with 0
 
-# Starting from occupied o, returns new occupied after one round of the rules
-# The seat layout is l
 function newoccupied1(o, l)
-    # Calculates how many adjacent are occupied for all the places
+    # Starting from occupied o, returns new occupied after one round of the rules
+    # The seat layout is l
+
     ao =
         shiftl(o) +
         shiftr(o) +
@@ -25,29 +25,32 @@ function newoccupied1(o, l)
         shiftr(shiftd(o)) +
         shiftr(shiftu(o)) +
         shiftl(shiftu(o))
+    # Calculates how many adjacent are occupied for all the places
+
     function rule(i)
-        # If a seat is empty (0) and there are no occupied seats adjacent to it,
-        # the seat becomes occupied.
         if o[i] == 0 && l[i] == 1 && ao[i] == 0
+            # If a seat is empty (0) and there are no occupied seats adjacent to it,
+            # the seat becomes occupied.
             1
+        elseif o[i] == 1 && ao[i] > 3
             # If a seat is occupied (1) and four or more seats adjacent to it are
             # also occupied, the seat becomes empty.
-        elseif o[i] == 1 && ao[i] > 3
             0
-            # Otherwise, the seat's state does not change.
         else
+            # Otherwise, the seat's state does not change.
             o[i]
         end
     end
-    # Apply the rule to all the places
+
     map(rule, CartesianIndices(l))
+    # Apply the rule to all the places
 end
 
 occupied = fill(0, size(puzzleinput))
 while true
     no = newoccupied1(occupied, puzzleinput)
-    # Exit when further applications of the rules cause no seats to change state
     if no == occupied
+        # Exit when further applications of the rules cause no seats to change state
         break
     end
     global occupied = no
@@ -55,14 +58,15 @@ end
 
 sum(occupied)
 
+
 # Second Half
 
-# Starting from occupied o, returns new occupied after one round of the rules
-# The seat layout is l
 function newoccupied2(o, l)
-    # Calculates how many first seats in each direction from place i
-    # are occupied
+    # Starting from occupied o, returns new occupied after one round of the rules
+    # The seat layout is l
     function sees(i)
+        # Calculates how many first seats in each direction from place i
+        # are occupied
         ij = [0; 0]
         ij[1] = i[1]
         ij[2] = i[2]
@@ -88,32 +92,35 @@ function newoccupied2(o, l)
         end
         occ
     end
+
+    ao = map(sees, CartesianIndices(l))
     # Calculates how many first seat in each direction are occupied
     # for all the places
-    ao = map(sees, CartesianIndices(l))
+
     function rule(i)
-        # If a seat is empty (0) and there are no occupied seats adjacent to it,
-        # the seat becomes occupied.
         if o[i] == 0 && l[i] == 1 && ao[i] == 0
+            # If a seat is empty (0) and there are no occupied seats adjacent to it,
+            # the seat becomes occupied.
             1
+        elseif o[i] == 1 && ao[i] > 4
             # If a seat is occupied (1) and five or more visible occupied seats are
             # also occupied, the seat becomes empty.
-        elseif o[i] == 1 && ao[i] > 4
             0
-            # Otherwise, the seat's state does not change.
         else
+            # Otherwise, the seat's state does not change.
             o[i]
         end
     end
-    # Apply the rule to all the places
+
     map(rule, CartesianIndices(l))
+    # Apply the rule to all the places
 end
 
 occupied = fill(0, size(puzzleinput))
 while true
     no = newoccupied2(occupied, puzzleinput)
-    # Exit when further applications of the rules cause no seats to change state
     if no == occupied
+        # Exit when further applications of the rules cause no seats to change state
         break
     end
     global occupied = no
