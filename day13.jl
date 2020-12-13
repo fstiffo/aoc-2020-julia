@@ -39,9 +39,11 @@ function findets(tt)
         while true
             if (t + departs[i]) % id == 0
                 dt *= id
-                # If the depart of bus id(i) is ok a this time stamp
-                # then the subsequent (id(i+1)) times stamp have to be
-                # this time stamp + n * id(i) * id(i+1) necessarily
+                # If the depart of bus ids[i] is ok a this time stamp t,
+                # then the times stamp for the subsequent in
+                # the time table (eg. ids[i+1]) has to be necessarily
+                # t + n * ids[i] * ids[i+1] + departs[i],
+                # if we want it to be ok also for the previous idses
 
                 break
             else
