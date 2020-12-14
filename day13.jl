@@ -34,8 +34,7 @@ function findets(tt)
     dt = 1
     t = ids[1]
 
-    for i in CartesianIndices(ids)
-        id = ids[i]
+    for (i,id) in enumerate(ids)
         while true
             if (t + departs[i]) % id == 0
                 dt *= id
@@ -44,7 +43,8 @@ function findets(tt)
                 # then the times stamp for the subsequent in
                 # the time table (eg. ids[i+1]) has to be necessarily
                 # t + n * ids[i] * ids[i+1] + departs[i],
-                # if we want it to be ok also for the previous idses
+                # if we want it to be ok also for the previous ids
+
 
                 break
             else
@@ -56,7 +56,7 @@ function findets(tt)
     return t
 end
 
-findets(timetable)
+@time findets(timetable)
 
 # With input:
 # 17,x,x,x,x,x,x,41,x,x,x,37,x,x,x,x,x,367,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,19,x,x,x,23,x,x,x,x,x,29,x,613,x,x,x,x,x,x,x,x,x,x,x,x,13
