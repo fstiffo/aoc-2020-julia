@@ -66,7 +66,6 @@ end
 
 # Seconf Half
 
-
 function Base.:&(mc::Char, c::Char)
     if mc == 'X'
         'X'
@@ -81,8 +80,8 @@ function execute2(progs)
     # Executes all the programs in progs filling the memory,then returns it
 
     function apply(mask::String, n::UInt64)
-        # Apply the mask to the address n and generate an
-        # array of address with all possible values of floating bits
+        # Apply the mask to the address n and generate a pool
+        # of address with all the possible values of the floating bits
 
         s = collect(bitstring(n)[29:end])
         masked = String(collect(mask) .& s)
