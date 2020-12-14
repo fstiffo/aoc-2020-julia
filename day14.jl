@@ -139,5 +139,3 @@ sumofvals = let acc = 0
 end
 
 @sprintf("%d", sumofvals)
-
-52+23
