@@ -9,7 +9,7 @@ function play(startingnums, numofturns)
     for i in eachindex(startingnums[1:end-1])
         spoken[startingnums[i]+1] = i
     end
-    # Preparation of the game: every elf says is number, that is the puzzleinput.
+    # Preparation of the game: every elf says is number that is the puzzleinput
 
     lstspkn = last(startingnums)
     turn = length(startingnums)
