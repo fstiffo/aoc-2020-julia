@@ -12,10 +12,8 @@ function play(startingnums, numofturns)
     # Preparation of the game: every elf says is number, that is the puzzleinput.
 
     lstspkn = last(startingnums)
-    start = length(startingnums)
+    turn = length(startingnums)
     stop = numofturns - 1
-
-    turn = start
     while true
         # Game loop
 
