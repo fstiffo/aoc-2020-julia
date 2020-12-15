@@ -4,7 +4,8 @@ puzzleinput = readdlm("inputs/day15.txt", ',', Int)
 
 function play(startingnums, numofturns)
 
-    spoken = Base.Dict{UInt32,UInt32}()
+    spoken = Array{Int,1}
+
     for i in eachindex(startingnums[1:end-1])
         spoken[startingnums[i]] = i
     end
@@ -25,7 +26,7 @@ function play(startingnums, numofturns)
 
         newnumber = spknbfr > 0 ? turn - spknbfr : 0
         # Yes, then he next number to speak is the difference between
-        # the turn number when it was last spoken (actual turn - 1) and the
+        # the turn number when it was last spoken (actual turn - 1) and resize!the
         # turn number the time it was most recently spoken before then
 
         # No, is a new numbers then the elf says "0"
@@ -46,3 +47,4 @@ end
 
 
 |
+resize!
