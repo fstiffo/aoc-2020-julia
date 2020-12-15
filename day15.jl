@@ -20,9 +20,9 @@ function play(startingnums, numofturns)
         newnumber = spoken[lstspkn+1] > 0 ? turn - spoken[lstspkn+1] : 0
         # Had the last number spoken also been spoken before?
 
-        # Yes, then he next number to speak is the difference between
-        # the turn number when it was last spoken (actual turn - 1) and resize!the
-        # turn number the time it was most recently spoken before then
+        # Yes, then the next number to speak is the difference between
+        # the turn number when it was last spoken (actual turn - 1) and
+        # the turn number the time it was most recently spoken before then
 
         # No, is a new numbers then the elf says "0"
 
