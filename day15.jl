@@ -4,15 +4,14 @@ puzzleinput = readdlm("inputs/day15.txt", ',', Int)
 
 function play(startingnums, numofturns)
 
-    spoken = Array{Int,1}
+    spoken = fill(-1, numofturns)
 
     for i in eachindex(startingnums[1:end-1])
-        spoken[startingnums[i]] = i
+        spoken[startingnums[i]+1] = i
     end
     # Preparation of the game: every elf says is number, that is the puzzleinput.
 
     lstspkn = last(startingnums)
-    display(lstspkn)
     start = length(startingnums)
     stop = numofturns - 1
 
@@ -20,20 +19,19 @@ function play(startingnums, numofturns)
     while true
         # Game loop
 
-
-        spknbfr = get(spoken, lstspkn, 0)
+        newnumber = spoken[lstspkn+1] > 0 ? turn - spoken[lstspkn+1] : 0
         # Had the last number spoken also been spoken before?
 
-        newnumber = spknbfr > 0 ? turn - spknbfr : 0
         # Yes, then he next number to speak is the difference between
         # the turn number when it was last spoken (actual turn - 1) and resize!the
         # turn number the time it was most recently spoken before then
 
         # No, is a new numbers then the elf says "0"
 
-        spoken[lstspkn] = turn
+        spoken[lstspkn+1] = turn
         lstspkn = newnumber
         # Now the elf says the number
+
         if turn < stop
             turn += 1
         else
@@ -43,8 +41,12 @@ function play(startingnums, numofturns)
 
 end
 
+
+# First Half
+
+@time play(puzzleinput, 2020)
+
+
+# Second Half
+
 @time play(puzzleinput, 30000000)
-
-
-|
-resize!
