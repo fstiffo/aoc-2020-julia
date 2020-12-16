@@ -114,15 +114,11 @@ function fldspos(tix, rngs, fldrngs)
                 # This field is good for shure, put it on done pool and
                 # remove it from the ones to do
 
-
                 for (f, cols) in todo
                     delete!(cols, u)
                     # The column of this field is taken, remove it from
-                    # the others
 
                 end
-
-
                 sieve_(todo, done)
             end
         end
@@ -133,6 +129,8 @@ function fldspos(tix, rngs, fldrngs)
     positions = sievecols(colsgoodforfld)
 
     [unique(positions[f.fld])[1] for f in fldrngs if haskey(positions, f.fld)]
+    # Extract only the positions of the requested fields in fldrngs
+
 end
 
 @time prod(yourtkt[fldspos(neartix, ranges, ranges[1:6])])
