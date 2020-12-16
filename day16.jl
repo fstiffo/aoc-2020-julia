@@ -66,7 +66,7 @@ function fldspos(tix, rngs, fldrngs)
 
 
     function check(c, f, tickets)
-        # For every value in column c of the ticket matrix checks
+        # For every value in column c of ticket matrix checks
         # if satisfy the ranges for field f
 
         col = hcat(tickets...)[c,:]
@@ -78,8 +78,8 @@ function fldspos(tix, rngs, fldrngs)
     colsgoodforfld = Dict{String,Set{Int}}()
     numofcols = length((hcat(tix...)[:,1]))
     for f in rngs
-        # For every field in the rules for tickets collects in a set
-        # the columns in the ticket matrix that have all values valid
+        # For every field in the rules collects, in a set, the columns
+        # in the ticket matrix that have all values valid
 
         colsgoodforfld[f.fld] = Set()
         for c in 1:numofcols
@@ -90,7 +90,7 @@ function fldspos(tix, rngs, fldrngs)
     end
 
     function sievecols(colsgoodforfld)
-        # Filter the cols good for a field untils remains only one for field
+        # Filter the cols good for a field untils only one remains for field
 
         function sieve_(todo, done)
             if length(todo) == 0
@@ -119,4 +119,4 @@ function fldspos(tix, rngs, fldrngs)
     [ unique(positions[f.fld])[1] for f in fldrngs if haskey(positions, f.fld) ]
 end
 
-prod(yourtkt[fldspos(neartix, ranges, ranges[1:6])])) ]
+@time prod(yourtkt[fldspos(neartix, ranges, ranges[1:6])])
