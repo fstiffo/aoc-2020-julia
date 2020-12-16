@@ -94,19 +94,35 @@ function fldspos(tix, rngs, fldrngs)
 
         function sieve_(todo, done)
             if length(todo) == 0
+                # No more fiels to check, we have done
+
                 return done
             end
+
             s = findfirst(x -> length(x) == 1, todo)
+            # Search first field with only a column good for it
+
             if (isnothing(s))
+                # No more fields that have only one column, we have done
+
                 return done
             else
                 singleton = todo[s]
                 u = unique(singleton)[1]
                 done[s] = u
                 delete!(todo, s)
+                # This field is good for shure, put it on done pool and
+                # remove it from the ones to do
+
+
                 for (f, cols) in todo
                     delete!(cols, u)
+                    # The column of this field is taken, remove it from
+                    # the others
+
                 end
+
+
                 sieve_(todo, done)
             end
         end
