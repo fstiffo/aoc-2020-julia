@@ -22,7 +22,7 @@ function readinput(inpt::Vector{String})
     yourtkt = parse.(Int,split(inpt[23],","))
 
     nearbytix = []
-    for l in inpt[27:end]
+    for l in inpt[26:end]
         push!(nearbytix, parse.(Int,split(l,",")))
     end
 
@@ -42,10 +42,10 @@ function tkt_scan_err_rate(tix, rngs)
     # The field in a ticket is invalid nearby if contains values
     # that are not valid for any field
 
-    notvalidsum(tkt) = sum(push!([fval for fval in tkt if !isvalid(fval)],0))
+    sumofnotvalid(tkt) = sum(push!([fval for fval in tkt if !isvalid(fval)],0))
     # Sum of tha values in invalid fields for a ticket
 
-    sum(notvalidsum.(tix))
+    sum(sumofnotvalid.(tix))
 end
 
 tkt_scan_err_rate(neartix, ranges)
@@ -53,26 +53,70 @@ tkt_scan_err_rate(neartix, ranges)
 
 # Second Half
 
+function fldspos(tix, rngs, fldrngs)
+    # Returns an array with the positions in the ticket
+    # for the fields in field ranges
 
-# struct TicketRanges
-#     deploc::Ranges
-#     depsta::Ranges
-#     depplt::Ranges
-#     deptrk::Ranges
-#     depdat::Ranges
-#     deptim::Ranges
-#     arrloc::Ranges
-#     arrsta::Ranges
-#     arrplt::Ranges
-#     arrtrk::Ranges
-#     class::Ranges
-#     durat::Ranges
-#     price::Ranges
-#     route::Ranges
-#     row::Ranges
-#     seat::Ranges
-#     train::Ranges
-#     type::Ranges
-#     wagon::Ranges
-#     zone::Ranges
-# end
+    isvalid(fval) = foldl(|,[ fval ∈ rs.rng[1] || fval ∈ rs.rng[2] for rs in rngs ])
+    isok(ticket) = foldl(&, [isvalid(fval) for fval in ticket])
+    # True if the ticket does not contain invalid values
+
+    tixok = tix[isok.(tix)]
+    # Valid tickets
+
+
+    function check(c, f, tickets)
+        # For every value in column c of the ticket matrix checks
+        # if satisfy the ranges for field f
+
+        col = hcat(tickets...)[c,:]
+        #Select column c of the matrix
+
+        foldl(&,[ v ∈ f.rng[1] || v ∈ f.rng[2] for v in col ])
+    end
+
+    colsgoodforfld = Dict{String,Set{Int}}()
+    numofcols = length((hcat(tix...)[:,1]))
+    for f in rngs
+        # For every field in the rules for tickets collects in a set
+        # the columns in the ticket matrix that have all values valid
+
+        colsgoodforfld[f.fld] = Set()
+        for c in 1:numofcols
+            if check(c, f, tixok)
+                push!(colsgoodforfld[f.fld],c)
+            end
+        end
+    end
+
+    function sievecols(colsgoodforfld)
+        # Filter the cols good for a field untils remains only one for field
+
+        function sieve_(todo, done)
+            if length(todo) == 0
+                return done
+            end
+            s = findfirst(x->length(x)==1, todo)
+            if (isnothing(s))
+                return done
+            else
+               singleton = todo[s]
+               u = unique(singleton)[1]
+               done[s] = u
+               delete!(todo, s)
+               for (f,cols) in todo
+                   delete!(cols, u)
+               end
+               sieve_(todo,done)
+           end
+        end
+        ∅ = Dict()
+        sieve_(colsgoodforfld,∅)
+    end
+
+    positions = sievecols(colsgoodforfld)
+
+    [ unique(positions[f.fld])[1] for f in fldrngs if haskey(positions, f.fld) ]
+end
+
+prod(yourtkt[fldspos(neartix, ranges, ranges[1:6])])) ]
