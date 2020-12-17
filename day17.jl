@@ -1,4 +1,4 @@
-puzzleinput = readlines("inputs/day17-test.txt")
+puzzleinput = readlines("inputs/day17.txt")
 
 initstate2D = map(reshape(vcat(collect.(puzzleinput)...), 8, 8)) do x
     x == '#'
@@ -44,7 +44,7 @@ function sim1(state, cycles)
     return state
 end
 
-sum(sim1(initstate3D, 6))
+@time count(sim1(initstate3D, 6))
 
 # Second Half
 
@@ -56,8 +56,8 @@ view(
     initstate4D,
     maxsz÷2-4:maxsz÷2+3,
     maxsz÷2-4:maxsz÷2+3,
-    maxsz÷2-4:maxsz÷2+3,
     maxsz ÷ 2,
+    maxsz ÷ 3,
 ) .= initstate2D
 # Moves the initial state 8 x 8, as a 1-dim slice,
 # to the center of the 4D initial state
@@ -72,14 +72,15 @@ function sim2(state, cycles)
         )
     end
 
-    function hood(grid, i)
-        # Return the state of the Moore neighbors of cell i in grid
+    function hood(grid, cell)
+        # Return the state of the Moore neighbors of cell in grid
 
-        c = Tuple(i)
+        c = Tuple(cell)
         return [grid[CartesianIndex(c .+ i)] for i in offsets4D()]
     end
 
     life(hood, cstate) = sum_states4D[cstate+1][sum(hood)+1]
+
 
     for cycle = 1:cycles
         next = reshape(fill(false, maxsz^4), maxsz, maxsz, maxsz, maxsz)
@@ -93,4 +94,4 @@ function sim2(state, cycles)
     return state
 end
 
-@time sum(sim2(initstate4D, 6))
+@time count(sim2(initstate4D, 6))
