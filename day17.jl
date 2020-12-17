@@ -52,13 +52,8 @@ const sum_states4D = tuple(false, false, false, true, zeros(Bool, 77)...),
 tuple(false, false, true, true, zeros(Bool, 77)...)
 
 initstate4D = reshape(fill(false, maxsz^4), maxsz, maxsz, maxsz, maxsz)
-view(
-    initstate4D,
-    maxsz÷2-4:maxsz÷2+3,
-    maxsz÷2-4:maxsz÷2+3,
-    maxsz ÷ 2,
-    maxsz ÷ 3,
-) .= initstate2D
+view(initstate4D, maxsz÷2-4:maxsz÷2+3, maxsz÷2-4:maxsz÷2+3, maxsz ÷ 2, maxsz ÷ 3) .=
+    initstate2D
 # Moves the initial state 8 x 8, as a 1-dim slice,
 # to the center of the 4D initial state
 
