@@ -8,7 +8,8 @@ const maxsz = 26
 
 # First Half
 
-const sum_states3D = tuple(false, false, false, true, zeros(Bool, 23)...), tuple(false, false, true, true, zeros(Bool, 23)...)
+const sum_states3D = tuple(false, false, false, true, zeros(Bool, 23)...),
+tuple(false, false, true, true, zeros(Bool, 23)...)
 
 initstate3D = reshape(fill(false, maxsz^3), maxsz, maxsz, maxsz)
 view(initstate3D, maxsz÷2-4:maxsz÷2+3, maxsz÷2-4:maxsz÷2+3, maxsz ÷ 2) .= initstate2D
@@ -16,10 +17,6 @@ view(initstate3D, maxsz÷2-4:maxsz÷2+3, maxsz÷2-4:maxsz÷2+3, maxsz ÷ 2) .= i
 # to the center of the 3D initial state
 
 function sim1(state, cycles)
-
-    cartidx = CartesianIndices(state)
-    # To convert a linear index in state to a cartesian one
-
     @inline function offsets()
         # Returns the Moore neighborhood in 3D as an iterable of offsets
 
@@ -29,7 +26,7 @@ function sim1(state, cycles)
     function hood(grid, i)
         # Return the state of the Moore neighbors of cell i in grid
 
-        c = Tuple(cartidx[i])
+        c = Tuple(i)
         [grid[CartesianIndex(c .+ i)] for i in offsets()]
     end
 
@@ -52,7 +49,8 @@ sum(sim1(initstate3D, 6))
 
 # Second Half
 
-const sum_states4D = tuple(false, false, false, true, zeros(Bool, 77)...), tuple(false, false, true, true, zeros(Bool, 77)...)
+const sum_states4D = tuple(false, false, false, true, zeros(Bool, 77)...),
+tuple(false, false, true, true, zeros(Bool, 77)...)
 
 initstate4D = reshape(fill(false, maxsz^4), maxsz, maxsz, maxsz, maxsz)
 view(
@@ -65,15 +63,14 @@ view(
 # Moves the initial state 8 x 8, as a 1-dim slice,
 # to the center of the 4D initial state
 
-function sim2!(state, cycles)
-
-    cartidx = CartesianIndices(state)
-    # To convert a linear index in state to a cartesian one
-
+function sim2(state, cycles)
     @inline function offsets()
-        # Returns the Moore neighborhood in 3D as an iterable of offsets
+        # Returns the Moore neighborhood in 4D as an iterable of offsets
 
-        ((i, j, k, l) for l in -1:1, k in -1:1, j in -1:1, i in -1:1 if (i, j, k, l) != (0, 0, 0, 0))
+        (
+            (i, j, k, l) for
+            l in -1:1, k in -1:1, j in -1:1, i in -1:1 if (i, j, k, l) != (0, 0, 0, 0)
+        )
     end
 
     function hood(grid, i)
@@ -97,4 +94,4 @@ function sim2!(state, cycles)
     state
 end
 
-sum(sim2!(initstate4D, 6))
+sum(sim2(initstate4D, 6))
