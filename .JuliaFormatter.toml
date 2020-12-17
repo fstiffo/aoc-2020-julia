@@ -1,4 +1,3 @@
-style = "blue"
 whitespace_ops_in_indices = true
 align_struct_field = true
 always_for_in = true
