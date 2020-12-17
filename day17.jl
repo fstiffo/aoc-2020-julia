@@ -4,7 +4,7 @@ initstate2D = map(reshape(vcat(collect.(puzzleinput)...), 8, 8)) do x
     x == '#'
 end
 
-const maxsz = 30
+const maxsz = 26
 
 # First Half
 
@@ -17,7 +17,7 @@ view(initstate3D, maxsz÷2-4:maxsz÷2+3, maxsz÷2-4:maxsz÷2+3, maxsz ÷ 2) .= i
 # to the center of the 3D initial state
 
 function sim1(state, cycles)
-    @inline function offsets()
+    @inline function offsets3D()
         # Returns the Moore neighborhood in 3D as an iterable of offsets
 
         return ((i, j, k) for k in -1:1, j in -1:1, i in -1:1 if (i, j, k) != (0, 0, 0))
@@ -27,7 +27,7 @@ function sim1(state, cycles)
         # Return the state of the Moore neighbors of cell i in grid
 
         c = Tuple(i)
-        return [grid[CartesianIndex(c .+ i)] for i in offsets()]
+        return [grid[CartesianIndex(c .+ i)] for i in offsets3D()]
     end
 
     life(hood, cstate) = sum_states3D[cstate+1][sum(hood)+1]
@@ -39,7 +39,7 @@ function sim1(state, cycles)
 
             next[i] = life(hood(state, i), state[i])
         end
-        next, state = state, next
+        state = next
     end
     return state
 end
@@ -63,7 +63,7 @@ view(
 # to the center of the 4D initial state
 
 function sim2(state, cycles)
-    @inline function offsets()
+    @inline function offsets4D()
         # Returns the Moore neighborhood in 4D as an iterable of offsets
 
         return (
@@ -76,7 +76,7 @@ function sim2(state, cycles)
         # Return the state of the Moore neighbors of cell i in grid
 
         c = Tuple(i)
-        return [grid[CartesianIndex(c .+ i)] for i in offsets()]
+        return [grid[CartesianIndex(c .+ i)] for i in offsets4D()]
     end
 
     life(hood, cstate) = sum_states4D[cstate+1][sum(hood)+1]
@@ -88,9 +88,9 @@ function sim2(state, cycles)
 
             next[i] = life(hood(state, i), state[i])
         end
-        next, state = state, next
+        state = next
     end
     return state
 end
 
-sum(sim2(initstate4D, 6))
+@time sum(sim2(initstate4D, 6))
