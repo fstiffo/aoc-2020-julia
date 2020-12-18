@@ -21,7 +21,7 @@ function my1(s)
     s = replace(s, r"(\d)" => s"My1(\1)")
     replace(s, r"\*" => s"-")
 end
-# Replace in the expression numbers with MY numbers
+# Replace in the expression, numbers with MY numbers
 # and operators with MY operators
 
 evaluate1(s) = eval(Meta.parse(my1(s))).val
