@@ -15,7 +15,7 @@ import Base.+, Base.-
 
 -(x::My1, y::My1) = My1(x.val * y.val)
 # For MY numbers '*' has the same precedence of '-' so to mantain
-# conventional recedence rules, the '*' operator is replaced by '-'
+# conventional precedence rules, the '*' operator is replaced by '-'
 
 function my1(s)
     s = replace(s, r"(\d)" => s"My1(\1)")
