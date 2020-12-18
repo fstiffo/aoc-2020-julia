@@ -11,10 +11,10 @@ end
 import Base.+, Base.-
 
 +(x::My1, y::My1) = My1(x.val + y.val)
-# For MY numbers '+' acts like the regular one
+# For MY numbers, '+' acts like the regular one
 
 -(x::My1, y::My1) = My1(x.val * y.val)
-# For MY numbers '*' has the same precedence of '-' so to mantain
+# For MY numbers, '*' has the same precedence of '-' so, to mantain
 # conventional precedence rules, the '*' operator is replaced by '-'
 
 function my1(s)
@@ -32,7 +32,7 @@ sum(evaluate1.(puzzleinput))
 
 # Second Half
 
-# As the firs half only rules change: now for MY numbers '+' has the
+# As the firs half only rules change: now for MY numbers, '+' has the
 # precedence rule of '*' and viceversa
 
 import Base.*
