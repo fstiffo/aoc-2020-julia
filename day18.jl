@@ -7,7 +7,6 @@ struct My1
 end
 # Define MY numbers that follow different rules
 
-
 import Base.+, Base.-
 
 +(x::My1, y::My1) = My1(x.val + y.val)
