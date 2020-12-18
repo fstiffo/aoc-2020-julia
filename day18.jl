@@ -32,7 +32,7 @@ sum(evaluate1.(puzzleinput))
 
 # Second Half
 
-# As the firs half only rules change: now for MY numbers, '+' has the
+# As the firs half, only rules change: now for MY numbers, '+' has the
 # precedence rule of '*' and viceversa
 
 import Base.*
