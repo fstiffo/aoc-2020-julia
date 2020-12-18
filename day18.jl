@@ -5,34 +5,34 @@ puzzleinput = readlines("inputs/day18.txt")
 struct My1
     val::Int
 end
-# Define my numbers that follow different rules
+# Define MY numbers that follow different rules
 
 
 import Base.+, Base.-
 
 +(x::My1, y::My1) = My1(x.val + y.val)
-# My numbers adds like regular ones
+# For MY numbers '+' acts like the regular one
 
 -(x::My1, y::My1) = My1(x.val * y.val)
-# For my numbers '*' has the same precedence of '-'
-# so to mantain precedence rules the '*' operator is replaced by '-'
+# For MY numbers '*' has the same precedence of '-' so to mantain
+# conventional recedence rules, the '*' operator is replaced by '-'
 
 function my1(s)
     s = replace(s, r"(\d)" => s"My1(\1)")
     replace(s, r"\*" => s"-")
 end
-# Replace in the expression numbers with my numbers
-# and operators with my operators
+# Replace in the expression numbers with MY numbers
+# and operators with MY operators
 
 evaluate1(s) = eval(Meta.parse(my1(s))).val
-# After reaplacement evaluation is maed with our rules
+# After reaplacement evaluation is done with MY rules
 
 sum(evaluate1.(puzzleinput))
 
 
 # Second Half
 
-# As the firs half only rules change: now for my numbers '+' has the
+# As the firs half only rules change: now for MY numbers '+' has the
 # precedence rule of '*' and viceversa
 
 import Base.*
