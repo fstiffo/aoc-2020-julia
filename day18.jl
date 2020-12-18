@@ -1,5 +1,6 @@
 puzzleinput = readlines("inputs/day18.txt")
 
+
 # First Half
 
 struct My1
