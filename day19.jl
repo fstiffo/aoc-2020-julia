@@ -42,7 +42,7 @@ function topdown(rules, str)
         # Get the state c: first element of the possibility list
 
         if c.ltrpos == length(str) + 1 && !isempty(c.symlst)
-            # If the the algorithm reached the last char but the possibility
+            # If the algorithm reached the last char but the possibility
             # list is not empty the parsing is not possible
 
             return false
