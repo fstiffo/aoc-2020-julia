@@ -17,22 +17,15 @@ function parse(::Type{Rule}, str::AbstractString)
     f.(split(str, "|"))
 end
 
-rules = fill(Rule(), 132)
 function parse_line!(rules, l)
     s = split(l, ":")
     rules[parse(Int, s[1])+1] = parse(Rule, s[2])
-end
-
-
-for l in puzzleinput_a
-    parse_line!(rules, l)
 end
 
 mutable struct State
     symlst::Vector{Symbl}
     ltrpos::Int
 end
-
 
 function topdown(rules, str)
 
@@ -41,12 +34,19 @@ function topdown(rules, str)
 
     while true
         if isempty(posslst)
-            # If possibility list is empty the parsing is no possbile
+            # If possibility list is empty the parsing is no possible
 
             return false
         end
         c = pop!(posslst)
         # Get the state c: first element of the possibility list
+
+        if c.ltrpos == length(str) + 1 && !isempty(c.symlst)
+            # If the the algorithm reached the last char but the possibility
+            # list is not empty the parsing is not possible
+
+            return false
+        end
 
         if isempty(c.symlst)
             if c.ltrpos == length(str) + 1
@@ -77,5 +77,26 @@ function topdown(rules, str)
     end
 end
 
+
+# First Half
+
+rules1 = fill(Rule(), 132)
+for l in puzzleinput_a
+    parse_line!(rules1, l)
+end
+
 puzzleinput_b = readlines("inputs/day19b.txt")
-sum([topdown(rules, s) for s in puzzleinput_b])
+sum([topdown(rules1, s) for s in puzzleinput_b])
+
+
+# Second Half
+
+rules2 = fill(Rule(), 132)
+for l in puzzleinput_a
+    parse_line!(rules2, l)
+end
+
+rules2[9] = [[43], [43, 9]]
+rules2[12] = [[43, 32], [43, 12, 32]]
+
+sum([topdown(rules2, s) for s in puzzleinput_b])
