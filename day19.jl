@@ -1,12 +1,7 @@
-using DataStructures
-
-
 puzzleinput_a = readlines("inputs/day19a.txt")
-
 
 Symbl = Union{Int,Char}
 Rule = Array{Array{Symbl,1},1}
-
 
 import Base.parse
 
@@ -56,8 +51,7 @@ function topdown(rules, str)
                 return true
             end
         else
-            fstsym = c.symlst[1]
-            deleteat!(c.symlst, 1)
+            fstsym = popfirst!(c.symlst)
             if isa(fstsym, Char)
                 if fstsym == str[c.ltrpos]
                     # The first symbol is a lexical symbol
