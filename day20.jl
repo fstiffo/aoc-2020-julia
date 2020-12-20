@@ -31,7 +31,7 @@ function rotate!(t::Tile)
     # from top to bottom on the 👈 and 👉
 end
 
-board = Matrix{Tile}(undef, 3, 3)
+board = Matrix{Tile}(undef, 12, 12)
 
 puzzleinput = readlines("inputs/day20-test.txt")
 
@@ -67,6 +67,7 @@ function readinput!(board, inp)
         i += 1
         l += 2
     end
+    print(i)
 end
 
 readinput!(board, puzzleinput)
@@ -86,7 +87,7 @@ println(
     " ",
 )
 
-ne
+
 
 function upscore!(b, t)
     # Update score of tile t in board begin
@@ -131,27 +132,79 @@ end
 
 function solve!(b)
 
-    sz = size(board)
+    function manip!(t)
+        # Try rotations and flip until a best score
+
+        maxs = upscore!(b, t)
+        for i = 1:3
+            rotate!(b[t])
+            if upscore!(b, t) == 4
+                return b[t].score
+            end
+            if b[t].score > maxs
+                maxs = b[t].score
+            end
+        end
+        flip!(b[t])
+        for i = 1:4
+            if upscore!(b, t) == 4
+                return b[t].score
+            end
+            if b[t].score > maxs
+                maxs = b[t].score
+            end
+            rotate!(b[t])
+        end
+
+        return maxs
+    end
+
+    sz = length(board)
     again = true
     for t in eachindex(b)
         upscore!(b, t)
     end
     while again
         again = false
-        for ts in b
-            for te = ts:sz
+        for t in eachindex(b)
+            if b[t].score < 4
                 # For every tile in b search a rotation or a flip that improves score
 
                 old = deepcopy(b[t])
-                if manipscore!(b[t]) <= old.score
+                if manip!(t) <= old.score
                     b[t] = old
                 else
                     again = true
-                    continue
-                    # Something change so we will try again another rounf,
+                    # Something change so we will try again another round,
                     # for now we continue with next tile
+
                 end
             end
         end
+
+        for t in eachindex(b)
+            for d = t+1:sz
+                score = b[t].score + b[d].score
+                if score < 8
+
+                    old_t, old_d = deepcopy(b[t]), deepcopy(b[d])
+
+                    b[t], b[d] = b[d], b[t]
+                    if manip!(t) + manip!(d) <= score
+                        b[t], b[d] = old_t, old_d
+                    else
+                        again = true
+                        continue
+                    end
+                end
+            end
+        end
+
     end
+end
+
+@time solve!(board)
+
+for t in board
+    println(t.score)
 end
