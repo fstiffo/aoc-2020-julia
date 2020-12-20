@@ -1,9 +1,9 @@
 
 mutable struct Tile
     id::Int
-    👇::UInt16
-    👉::UInt16
     👆::UInt16
+    👉::UInt16
+    👇::UInt16
     👈::UInt16
     score::Int
 end
@@ -22,7 +22,7 @@ end
 function rotate!(t::Tile)
     # Rotate clockwise,
 
-    t.👇, t.👉, t.👆, t.👈 = t.👈, t.👇, t.👉, t.👆
+     t.👆, t.👉, t.👇, t.👈 = t.👈, t.👆, t.👉, t.👇
 
     t.👆 = tile_side_reverse(t.👆)
     t.👇 = tile_side_reverse(t.👇)
@@ -36,25 +36,48 @@ board = Matrix{Tile}(undef, 3, 3)
 puzzleinput = readlines("inputs/day20-test.txt")
 
 function readinput!(board, inp)
+    function p2b(s)
+        # Convert pattern of tje side of a tile in binary number
+
+        s = replace(s, r"#" => "1")
+        s = replace(s, r"\." => "0")
+        parse(UInt16, s, base = 2)
+    end
+
     l = 1
     i = 1
     while true
-        match(r"Tile: (\d+):", inp[l])
-        board[i].id = parse(int,m[1])
+        m = match(r"Tile (\d+):", inp[l])
+        id = parse(Int, m[1])
         l += 1
-        top = inp[l]
-        left = top[1:1]
-        right = top[end:end]
-        l +=1
-        for j in l:l+8
-            push!(left, inp[l][1])
-            push!(right, inp[l][end])
+        👆 = inp[l]
+        👈 = 👆[1:1]
+        👉 = 👆[end:end]
+        l += 1
+        for j = l:l+8
+            👈 *= inp[j][1]
+            👉 *= inp[j][end]
         end
-        l += 9
-        bot = inp[l]
-        push!(left, bot[1])
-        push!(right, bot[end])
-        board[i].
-
+        l += 8
+        👇 = inp[l]
+        board[i] = Tile(id, p2b(👆), p2b(👉), p2b(👇), p2b(👈), 0)
+        if i == 3 * 3
+            break
+        end
+        i += 1
+        l += 2
     end
 end
+
+readinput!(board, puzzleinput)
+
+
+b = board[1]
+
+flip!(b)
+println(
+    bitstring(b.👆)[7:end]," ",
+    bitstring(b.👉)[7:end]," ",
+    bitstring(b.👇)[7:end]," ",
+    bitstring(b.👈)[7:end]," ",
+)
