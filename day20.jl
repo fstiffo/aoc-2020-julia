@@ -22,7 +22,7 @@ end
 function rotate!(t::Tile)
     # Rotate clockwise,
 
-     t.👆, t.👉, t.👇, t.👈 = t.👈, t.👆, t.👉, t.👇
+    t.👆, t.👉, t.👇, t.👈 = t.👈, t.👆, t.👉, t.👇
 
     t.👆 = tile_side_reverse(t.👆)
     t.👇 = tile_side_reverse(t.👇)
@@ -76,8 +76,82 @@ b = board[1]
 
 flip!(b)
 println(
-    bitstring(b.👆)[7:end]," ",
-    bitstring(b.👉)[7:end]," ",
-    bitstring(b.👇)[7:end]," ",
-    bitstring(b.👈)[7:end]," ",
+    bitstring(b.👆)[7:end],
+    " ",
+    bitstring(b.👉)[7:end],
+    " ",
+    bitstring(b.👇)[7:end],
+    " ",
+    bitstring(b.👈)[7:end],
+    " ",
 )
+
+ne
+
+function upscore!(b, t)
+    # Update score of tile t in board begin
+
+    sz = size(board, 1) # Board side size
+
+    function neighbors_sides(t)
+        # Returns the neighborhood of a tile
+
+        (i, j) = Tuple(CartesianIndices(b)[t])
+        if j > 1
+            👈 = b[i, j-1].👉 #
+        end
+        if j < sz
+            👉 = b[i, j+1].👈
+        end
+        if i > 1
+            👆 = b[i-1, j].👇
+        end
+        if i < sz
+            👇 = b[i+1, j].👆
+        end
+        if j == 1 # Left side tiles
+            👈 = b[i, j].👈
+        end
+        if j == sz # Righ side tiles
+            👉 = b[i, j].👉
+        end
+        if i == 1 # Top side tiles
+            👆 = b[i, j].👆
+        end
+        if i == sz # Bottom side tiles
+            👇 = b[i, j].👇
+        end
+
+        return (👆 = 👆, 👉 = 👉, 👇 = 👇, 👈 = 👈)
+    end
+
+    ns = neighbors_sides(t)
+    b[t].score = sum([b[t].👆 == ns.👆, b[t].👉 == ns.👉, b[t].👇 == ns.👇, b[t].👈 == ns.👈])
+end
+
+function solve!(b)
+
+    sz = size(board)
+    again = true
+    for t in eachindex(b)
+        upscore!(b, t)
+    end
+    while again
+        again = false
+        for ts in b
+            for te = ts:sz
+                # For every tile in b search a rotation or a flip that improves score
+
+                old = deepcopy(b[t])
+                if manipscore!(b[t]) <= old.score
+                    b[t] = old
+                else
+                    again = true
+                    continue
+                    # Something change so we will try again another rounf,
+                    # for now we continue with next tile
+                end
+            end
+        end
+    end
+end
