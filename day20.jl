@@ -31,7 +31,7 @@ function rotate!(t::Tile)
     # from top to bottom on the 👈 and 👉
 end
 
-board = Matrix{Tile}(undef, 12, 12)
+board = Matrix{Tile}(undef, 3, 3)
 
 puzzleinput = readlines("inputs/day20-test.txt")
 
@@ -70,22 +70,21 @@ function readinput!(board, inp)
     print(i)
 end
 
-readinput!(board, puzzleinput)
 
 
 b = board[1]
 
-flip!(b)
-println(
-    bitstring(b.👆)[7:end],
-    " ",
-    bitstring(b.👉)[7:end],
-    " ",
-    bitstring(b.👇)[7:end],
-    " ",
-    bitstring(b.👈)[7:end],
-    " ",
-)
+# flip!(b)
+# println(
+#     bitstring(b.👆)[7:end],
+#     " ",
+#     bitstring(b.👉)[7:end],
+#     " ",
+#     bitstring(b.👇)[7:end],
+#     " ",
+#     bitstring(b.👈)[7:end],
+#     " ",
+# )
 
 
 
@@ -159,29 +158,16 @@ function solve!(b)
         return maxs
     end
 
-    sz = length(board)
-    again = true
+
     for t in eachindex(b)
         upscore!(b, t)
     end
+
+    sz = length(board)
+    again = true
+
     while again
         again = false
-        for t in eachindex(b)
-            if b[t].score < 4
-                # For every tile in b search a rotation or a flip that improves score
-
-                old = deepcopy(b[t])
-                if manip!(t) <= old.score
-                    b[t] = old
-                else
-                    again = true
-                    # Something change so we will try again another round,
-                    # for now we continue with next tile
-
-                end
-            end
-        end
-
         for t in eachindex(b)
             for d = t+1:sz
                 score = b[t].score + b[d].score
@@ -190,20 +176,23 @@ function solve!(b)
                     old_t, old_d = deepcopy(b[t]), deepcopy(b[d])
 
                     b[t], b[d] = b[d], b[t]
-                    if manip!(t) + manip!(d) <= score
+                    newscore = manip!(t) + manip!(d)
+                    if newscore <= score
                         b[t], b[d] = old_t, old_d
                     else
                         again = true
-                        continue
+                        break
                     end
                 end
             end
         end
-
+        display(map(t -> t.score, b))
     end
 end
 
-@time solve!(board)
+
+readinput!(board, puzzleinput)
+solve!(board)
 
 for t in board
     println(t.score)
