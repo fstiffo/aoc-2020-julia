@@ -1,19 +1,15 @@
-Food = String
+Ingredient = String
 Allergen = String
 
-Usedin = Set{Food}
+Allergens = Set{Allergen}
 
-function readinput!(foods,possiblyusedin,foodlist)
-    for l in foodlist
-        m = match(r"(.+) \(contains (.+)\)",l)
-        newfoods = Set(split(m[1], " "))
-        union!(foods, newfoods)
-        allergens = split(m[2], ", ")
-        for i in allergens
-            usedin = get(possiblyusedin,i,[])
-            push!(usedin, newfoods)
-            possiblyusedin[i] = usedin
-        end
+function readinput!(foodlist, textinput)
+    for l in textinput
+        m = match(r"(.+) \(contains (.+)\)", l)
+        ingredients = split(m[1], " ")
+        allergens = Set(split(m[2], ", "))
+        contains = Dict([(i, allergens) for i in ingredients])
+        push!(foodlist, contains)
     end
 end
 
@@ -21,15 +17,39 @@ end
 
 puzzleinput = readlines("inputs/day21.txt")
 
-possiblyusedin = Dict{Allergen,Vector{Usedin}}()
-foods = Usedin()
+foodlist = Vector{Dict{Ingredient,Allergens}}()
 
-readinput!(foods, possiblyusedin,puzzleinput)
+readinput!(foodlist, puzzleinput)
 
-function appearances(foods, possiblyusedin, foodlist)
-    foods_with_allergens = union([intersect(fs...) for (i,fs) in possiblyusedin]...)
-    foods_with_noallergens = setdiff(foods,foods_with_allergens)
-    sum(sum([occursin.(f, foodlist) for f in foods_with_noallergens]))
+foodlist
+
+function freeofallergens!(foodlist)
+    free = []
+    for l = 2:length(foodlist)
+        for (food, allergens) in foodlist[l]
+            prevs = foodlist[1:l-1]
+            for prev in prevs
+                if haskey(prev, food)
+                    intersect!(allergens, prev[food])
+                    if isempty(allergens) # The food can't contain allergens
+                        push!(free, food)
+                        map(foodlist) do l
+                            delete!(l, food)
+                        end
+                    else # Update the possible allergens contained by food
+                        foodlist[l][food] = allergens
+                        map(prevs) do p
+                            p[food] = allergens
+                        end
+                    end
+                end
+                print("Nay!")
+            end
+        end
+    end
+    free
 end
 
-appearances(foods, possiblyusedin, puzzleinput)
+freeofallergens = freeofallergens!(foodlist)
+
+sum(sum([occursin.(f, puzzleinput) for f in freeofallergens]))
