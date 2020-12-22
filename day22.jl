@@ -1,5 +1,3 @@
-using DataStructures
-
 puzzleinput = readlines("inputs/day22.txt")
 
 Deck = Vector{Int}
@@ -57,12 +55,12 @@ combat!(player1, player2)
 
 function recursivecombat!(player1::Deck, player2::Deck)
 
-    function playgame(calling_game, history, p1, p2)
+    function playgame(calling_game, p1, p2)
 
         local game = calling_game + 1
         # println("=== Game $game ===")
         round = 1
-
+        local history = []
         while !(isempty(p1) || isempty(p2))
             # println()
             # println("--- Round $round (Game $game)--")
@@ -72,13 +70,13 @@ function recursivecombat!(player1::Deck, player2::Deck)
                 # Check if there was a previous round in this game that had
                 # exactly the same cards in the same order in the same players' decks
 
-                println("Previous round in the game with same cards.")
-                println("The winner of game $game is player 1!")
-                println()
-                println("...anyway, back to game $calling_game")
+                # println("Previous round in the game with same cards.")
+                # println("The winner of game $game is player 1!")
+                # println()
+                # println("...anyway, back to game $calling_game")
                 return 1 # If the case, player 1 wins
             end
-            push!(history, (p1, p2))
+            push!(history, (deepcopy(p1), deepcopy(p2)))
 
             # println("Plater 1 plays: $d1")
             # println("Plater 2 plays: $d2")
@@ -90,8 +88,8 @@ function recursivecombat!(player1::Deck, player2::Deck)
                 # deck as the value of the card they just drew, the winner of
                 # the round is determined by playing a new game of Recursive Combat
 
-                p1copy = deepcopy(p1[1:d1])
-                p2copy = deepcopy(p2[1:d2])
+                local p1copy = deepcopy(p1[1:d1])
+                local p2copy = deepcopy(p2[1:d2])
                 # To play a sub-game of Recursive Combat, each player creates
                 # a new deck by making a copy of the next cards in their deck
                 # (the quantity of cards copied is equal to the number on the card
@@ -99,7 +97,7 @@ function recursivecombat!(player1::Deck, player2::Deck)
 
                 # println("Playing a sub-game to determine the winner...")
                 # println()
-                playgame(game, history, p1copy, p2copy)
+                playgame(game, p1copy, p2copy)
                 # The winner is the winner of the sub-game
 
             else
@@ -135,12 +133,12 @@ function recursivecombat!(player1::Deck, player2::Deck)
 
 
     game = 0
-    history = []
-    playgame(game, history, player1, player2)
+    playgame(game, player1, player2)
 
 end
+
 
 player1, player2 = readinput(puzzleinput)
 
 
-recursivecombat!(player1, player2)
+@time recursivecombat!(player1, player2)
