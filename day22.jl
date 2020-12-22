@@ -39,6 +39,7 @@ function play!(player1::Deck, player2::Deck)
             player2 = [player2; draw2; draw1]
             println("Player 2 wins the round!")
         end
+        round += 1
         println()
     end
     println("== Post-game results ==")
