@@ -43,7 +43,7 @@ function freeofallergens!(foodlist)
                         end
                     end
                 end
-                print("Nay!")
+                # print("Nay!")
             end
         end
     end
