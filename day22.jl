@@ -18,7 +18,10 @@ end
 
 player1, player2 = readinput(puzzleinput)
 
-function play(player1::Deck, player2::Deck)
+
+# First Half
+
+function play!(player1::Deck, player2::Deck)
     round = 1
     while !(isempty(player1) || isempty(player2))
         # Games end wheh the deck of one og the players is empty
@@ -46,14 +49,4 @@ function play(player1::Deck, player2::Deck)
     println("Score = $score")
 end
 
-play(player1, player2)
-
-collect([length(player2):1])
-
-length(player2)
-
-collect(1:10)
-
-[12:1]
-
-[1:12]
+play!(player1, player2)
