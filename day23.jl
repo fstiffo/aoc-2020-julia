@@ -76,20 +76,20 @@ const maxlbl2 = 1000000
 function simulate2!(labeling, moves)
 
     cups = collect([2:maxlbl2+1]...)
-    labeling = [labeling;length(labeling)+1]
-    for i in 1:9
+    labeling = [labeling; length(labeling) + 1]
+    for i = 1:9
         n = labeling[i]
         nx = labeling[i+1]
         cups[n] = nx
     end
     cups[maxlbl2] = labeling[1]
-    # The cups arrya store at position n the label of the cup immediately
+    # The cups array store at position n the label of the cup immediately
     # clockwise of cup labeled n, that make all so simple!
 
 
     cur = labeling[1]
     des = 0
-    pck = [0,0,0]
+    pck = [0, 0, 0]
     for m = 1:moves
         pck[1] = cups[cur]
         pck[2] = cups[pck[1]]
