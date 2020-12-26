@@ -1,6 +1,6 @@
 using LightGraphs
 using GraphPlot
-
+using DataStructures
 
 function readinput(strs)
 
@@ -50,11 +50,14 @@ end
 function howmany_contains(rules, vtxclr, rulesgrf, color)
 
     function add_predecessors!(v, preds)
+
         inns = inneighbors(rulesgrf, v)
+
         if isempty(inns)
             return
         end
         push!(preds, inns...)
+
         for nv in inns
             add_predecessors!(nv, preds)
         end
@@ -67,7 +70,7 @@ function howmany_contains(rules, vtxclr, rulesgrf, color)
     length(containers)
 end
 
-puzzleinput = readlines("inputs/day07.txt")
+puzzleinput = readlines("inputs/day07-test.txt")
 (rules, vtxclr, rulesgrf) = readinput(puzzleinput)
 
 howmany_contains(rules, vtxclr, rulesgrf, "shiny gold")
@@ -75,8 +78,24 @@ howmany_contains(rules, vtxclr, rulesgrf, "shiny gold")
 
 # Second Half
 
-function howmany_inside(args)
-    body
+function howmany_inside(rules, vtxclr, rulesgrf, color)
+
+    function howmany_inside(color)
+
+        contents = rules[color].contents
+
+        if isempty(contents)
+            return 0
+        end
+        count = sum(counter(contents))
+
+        for (c,q) in contents
+            count += q * howmany_inside(c)
+        end
+        return count
+    end
+
+    howmany_inside(color)
 end
 
 
