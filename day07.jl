@@ -78,7 +78,7 @@ howmany_contains(rules, vtxclr, rulesgrf, "shiny gold")
 
 # Second Half
 
-function howmany_inside(rules, vtxclr, rulesgrf, color)
+function howmany_inside(rules, color)
 
     function howmany_inside(color)
 
@@ -102,4 +102,4 @@ end
 puzzleinput = readlines("inputs/day07.txt")
 (rules, vtxclr, rulesgrf) = readinput(puzzleinput)
 
-howmany_inside(rules, vtxclr, rulesgrf, "shiny gold")
+howmany_inside(rules, "shiny gold")
