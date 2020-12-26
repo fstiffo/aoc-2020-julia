@@ -1,3 +1,5 @@
+using DataStructures
+
 Ingredient = String
 Allergen = String
 
@@ -23,6 +25,9 @@ function readinput(strs)
     return ingredients, allergens, foods
 end
 
+
+# Firts Half
+
 function foundsin!(allergens, foods)
     foundsin = Ingredients()
     prevlen = -1
@@ -41,13 +46,50 @@ function foundsin!(allergens, foods)
             setdiff!(ingrs, foundsin)
         end
     end
-    foundsin
+    return foundsin
 end
 
 puzzleinput = readlines("inputs/day21.txt")
 (ingredients, allergens, foods) = readinput(puzzleinput)
 
-foundsin = foundsin!(allergens, foods)
-cantcontain = setdiff(ingredients, foundsin)
+cancontain = foundsin!(allergens, foods)
+cantcontain = setdiff(ingredients, cancontain)
 
 sum(s -> length(s.ingrs ∩ cantcontain), foods )
+
+
+# Second Half
+
+function whichinwhich!(allergens, foods)
+    whichinwhich = SortedDict()
+    foundsin = Ingredients()
+    prevlen = -1
+    while prevlen < length(foundsin)
+        prevlen = length(foundsin)
+        possiblyin = OrderedDict()
+        for a in allergens
+            contains_a = [ingrs for (ingrs, allrgs) in foods if a ∈ allrgs]
+            p = intersect(contains_a...)
+            possiblyin[a] = p
+        end
+        only1ingr = Set()
+        for  (a, ingrs) in possiblyin
+            if length(ingrs) == 1
+                ingr = collect(ingrs)[1]
+                push!(only1ingr, ingr)
+                insert!(whichinwhich, a, ingr)
+            end
+        end
+        union!(foundsin, only1ingr)
+        for (ingrs, _) in foods
+            setdiff!(ingrs, foundsin)
+        end
+    end
+    whichinwhich
+end
+
+puzzleinput = readlines("inputs/day21.txt")
+(ingredients, allergens, foods) = readinput(puzzleinput)
+
+cancontain = whichinwhich!(allergens, foods)
+foldl((x,y) -> x * "," * y, getfield.(collect(cancontain),2))
