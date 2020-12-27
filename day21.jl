@@ -55,7 +55,7 @@ puzzleinput = readlines("inputs/day21.txt")
 cancontain = foundsin!(allergens, foods)
 cantcontain = setdiff(ingredients, cancontain)
 
-sum(s -> length(s.ingrs ∩ cantcontain), foods )
+sum(s -> length(s.ingrs ∩ cantcontain), foods)
 
 
 # Second Half
@@ -73,7 +73,7 @@ function whichinwhich!(allergens, foods)
             possiblyin[a] = p
         end
         only1ingr = Set()
-        for  (a, ingrs) in possiblyin
+        for (a, ingrs) in possiblyin
             if length(ingrs) == 1
                 ingr = collect(ingrs)[1]
                 push!(only1ingr, ingr)
@@ -89,7 +89,7 @@ function whichinwhich!(allergens, foods)
 end
 
 puzzleinput = readlines("inputs/day21.txt")
-(ingredients, allergens, foods) = readinput(puzzleinput)
+(_, allergens, foods) = readinput(puzzleinput)
 
 cancontain = whichinwhich!(allergens, foods)
-foldl((x,y) -> x * "," * y, getfield.(collect(cancontain),2))
+join(getfield.(collect(cancontain), 2), ",")
