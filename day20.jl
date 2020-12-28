@@ -72,3 +72,5 @@ for i in  CartesianIndices(combs)
 end
 
 prod(ids[degree(G) .== 2])
+
+gplot(G, layout=spectral_layout)
