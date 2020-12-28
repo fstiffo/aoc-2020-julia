@@ -65,7 +65,6 @@ sums = collect.(sums)
 sums = map(x -> Int(x) - 48, sums)
 # Convert strings in array of integers
 
-
 prod(sums)
 # From the combinatorial calculus, the number of possible paths is
 # the product of the possible paths between the subseguent joltages
