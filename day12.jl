@@ -11,7 +11,6 @@ puzzleinput = map(s -> Instr(s[1], parse(Int, s[2:end])), puzzleinput)
 
 # First Half
 
-
 struct Ship
     pos::Vector{Int} # Ship position on the plane (x, y)
     dir::Vector{Int} # Ship direction as unit vector (eg. ovest = (-1,0))
@@ -26,13 +25,14 @@ function handle1(s::Ship, i::Instr)
     val = i.val
     if act == 'L' || act == 'R'
         val = (act == 'R' ? -1 : 1) * val
-        # Right means clockwise rotation eq to negatives angles
+        #  Right means clockwise rotation = negatives angles in trigs functions
 
         theta = deg2rad(val)
         rotmat = [cos(theta) -sin(theta); sin(theta) cos(theta)]
         rotmat = map(x -> trunc(Int, x), rotmat)
         return Ship(s.pos, rotmat * s.dir)
-        # Rotation matrix multiplication to perform rotation
+        # To perform rotation, multiply by rotation matrix
+
     end
     if act == 'F'
         v = val * s.dir
@@ -49,9 +49,6 @@ sum(map(abs, wherelead.pos))
 
 # Second Half
 
-waypoint = ship.pos + [10, 1]
-#The waypoint starts 10 units east and 1 unit north relative to the ship.
-
 function handle2(sw::Tuple{Ship,Array{Int,1}}, i::Instr)
     # From a ship status s and a waypoint w,
     # handles an instruction i returning the new ship status and waypoint
@@ -62,13 +59,10 @@ function handle2(sw::Tuple{Ship,Array{Int,1}}, i::Instr)
     val = i.val
     if act == 'L' || act == 'R'
         val = (act == 'R' ? -1 : 1) * val
-        # Right means clockwise rotation eq to negatives angles
-
         theta = deg2rad(val)
         rotmat = [cos(theta) -sin(theta); sin(theta) cos(theta)]
         rotmat = map(x -> trunc(Int, x), rotmat)
         return (s, rotmat * w)
-        # Rotation matrix multiplication to perform rotation
     end
     if act == 'F'
         v = val * w
@@ -79,6 +73,9 @@ function handle2(sw::Tuple{Ship,Array{Int,1}}, i::Instr)
     end
     (s, w)
 end
+
+waypoint = ship.pos + [10, 1]
+#The waypoint starts 10 units east and 1 unit north relative to the ship.
 
 wherelead = reduce(handle2, puzzleinput, init = (ship, waypoint))
 
