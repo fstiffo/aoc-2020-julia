@@ -45,7 +45,6 @@ function findets(tt)
                 # t + n * ids[i] * ids[i+1] + departs[i],
                 # if we want it to be ok also for the previous ids
 
-
                 break
             else
                 t += dt
