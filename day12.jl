@@ -29,8 +29,7 @@ function handle1(s::Ship, i::Instr)
         #  Right means clockwise rotation = negatives angles in trigs functions
 
         θ = deg2rad(val)
-        R = [cos(θ) -sin(θ); sin(θ) cos(θ)]
-        R = map(x -> trunc(Int, x), R)
+        R = trunc.(Int, [cos(θ) -sin(θ); sin(θ) cos(θ)])
         return Ship(s.pos, R * s.dir)
         # To perform rotation, multiply by rotation matrix
 
@@ -61,8 +60,7 @@ function handle2(sw::Tuple{Ship,Array{Int,1}}, i::Instr)
     if act == 'L' || act == 'R'
         val = (act == 'R' ? -1 : 1) * val
         θ = deg2rad(val)
-        R = [cos(θ) -sin(θ); sin(θ) cos(θ)]
-        R = map(x -> trunc(Int, x), R)
+        R = trunc.(Int, [cos(θ) -sin(θ); sin(θ) cos(θ)])
         return (s, R * w)
     end
     if act == 'F'
