@@ -22,15 +22,16 @@ ship = Ship([0, 0], [1, 0]) # The ship starts by facing east.
 function handle1(s::Ship, i::Instr)
     # From a ship status s, handles an instruction i returning the new ship status
 
+    act = i.act
     val = i.val
     if act == 'L' || act == 'R'
         val = (act == 'R' ? -1 : 1) * val
         #  Right means clockwise rotation = negatives angles in trigs functions
 
-        theta = deg2rad(val)
-        rotmat = [cos(theta) -sin(theta); sin(theta) cos(theta)]
-        rotmat = map(x -> trunc(Int, x), rotmat)
-        return Ship(s.pos, rotmat * s.dir)
+        θ = deg2rad(val)
+        R = [cos(θ) -sin(θ); sin(θ) cos(θ)]
+        R = map(x -> trunc(Int, x), R)
+        return Ship(s.pos, R * s.dir)
         # To perform rotation, multiply by rotation matrix
 
     end
@@ -59,10 +60,10 @@ function handle2(sw::Tuple{Ship,Array{Int,1}}, i::Instr)
     val = i.val
     if act == 'L' || act == 'R'
         val = (act == 'R' ? -1 : 1) * val
-        theta = deg2rad(val)
-        rotmat = [cos(theta) -sin(theta); sin(theta) cos(theta)]
-        rotmat = map(x -> trunc(Int, x), rotmat)
-        return (s, rotmat * w)
+        θ = deg2rad(val)
+        R = [cos(θ) -sin(θ); sin(θ) cos(θ)]
+        R = map(x -> trunc(Int, x), R)
+        return (s, R * w)
     end
     if act == 'F'
         v = val * w
@@ -75,7 +76,7 @@ function handle2(sw::Tuple{Ship,Array{Int,1}}, i::Instr)
 end
 
 waypoint = ship.pos + [10, 1]
-#The waypoint starts 10 units east and 1 unit north relative to the ship.
+# The waypoint starts 10 units east and 1 unit north relative to the ship.
 
 wherelead = reduce(handle2, puzzleinput, init = (ship, waypoint))
 
