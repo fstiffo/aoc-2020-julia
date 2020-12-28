@@ -22,8 +22,7 @@ ship = Ship([0, 0], [1, 0]) # The ship starts by facing east.
 function handle1(s::Ship, i::Instr)
     # From a ship status s, handles an instruction i returning the new ship status
 
-    act = i.act
-    val = i.val
+    act, val = i.act, i.val
     if act == 'L' || act == 'R'
         val = (act == 'R' ? -1 : 1) * val
         #  Right means clockwise rotation = negatives angles in trigs functions
@@ -37,7 +36,7 @@ function handle1(s::Ship, i::Instr)
     if act == 'F'
         v = val * s.dir
     else
-        v = val * getindex(Actions, act)
+        v = val * Actions[act]
     end
     Ship(s.pos + v, s.dir)
 end
@@ -53,10 +52,8 @@ function handle2(sw::Tuple{Ship,Array{Int,1}}, i::Instr)
     # From a ship status s and a waypoint w,
     # handles an instruction i returning the new ship status and waypoint
 
-    s = sw[1]
-    w = sw[2]
-    act = i.act
-    val = i.val
+    s, w = sw[1], sw[2]
+    act, val = i.act, i.val
     if act == 'L' || act == 'R'
         val = (act == 'R' ? -1 : 1) * val
         θ = deg2rad(val)
@@ -67,8 +64,8 @@ function handle2(sw::Tuple{Ship,Array{Int,1}}, i::Instr)
         v = val * w
         s = Ship(s.pos + v, s.dir)
     else
-        v = val * getindex(Actions, act)
-        w = w + v
+        v = val * Actions[act]
+        w += v
     end
     (s, w)
 end
