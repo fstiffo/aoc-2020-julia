@@ -14,8 +14,6 @@ function readinput(lines)
     return player₁, player₂
 end
 
-player₁, player₂ = readinput(puzzleinput)
-
 
 # First Half
 
@@ -51,7 +49,11 @@ function combat!(player₁::Deck, player₂::Deck)
     println("Score = $score")
 end
 
+player₁, player₂ = readinput(puzzleinput)
 combat!(player1, player2)
+
+
+# Second Half
 
 function recursivecombat!(player₁::Deck, player₂::Deck)
 
@@ -93,6 +95,7 @@ function recursivecombat!(player₁::Deck, player₂::Deck)
 
                 d₁ > d₂ ? 1 : 2
             end
+
             if winner == 1
                 p₁ = [p₁; d₁; d₂]
             else
@@ -100,6 +103,7 @@ function recursivecombat!(player₁::Deck, player₂::Deck)
             end
             round += 1
         end
+
         winner = isempty(p₁) ? 2 : 1
         if game > 1
             return winner
@@ -109,7 +113,7 @@ function recursivecombat!(player₁::Deck, player₂::Deck)
             println("== Post-game results ==")
             println("Player 1's deck: $p₁")
             println("Player 2's deck: $p₂")
-            wdeck = winner == 1 ? p1 : p₂
+            wdeck = winner == 1 ? p₁ : p₂
             score = sum(reverse(collect(1:length(wdeck))) .* wdeck)
             println("Score = $score")
         end
@@ -122,6 +126,4 @@ end
 
 
 player₁, player₂ = readinput(puzzleinput)
-
-
 @time recursivecombat!(player₁, player₂)
