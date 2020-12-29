@@ -74,7 +74,7 @@ blacksideups(tiles) = count(values(tiles))
 puzzletestinput = readlines("inputs/day24-test.txt")
 puzzleinput = readlines("inputs/day24.txt")
 
-blacksideups(placetiles(readinput(puzzletestinput)))
+puzzleinput |> readinput |> placetiles |> blacksideups
 
 
 # Second half
@@ -116,7 +116,7 @@ function flipall!(tiles, times)
 
         for t in toflip
             # The rules are applied simultaneously to every tile
-            
+
             tiles[t] = !tiles[t]
         end
     end
@@ -152,4 +152,6 @@ end
 puzzletestinput = readlines("inputs/day24-test.txt")
 puzzleinput = readlines("inputs/day24.txt")
 
-blacksideups(flipall!(placetiles(readinput(puzzleinput)), 100))
+flipall(times) = tiles -> flipall!(tiles, times)
+
+puzzleinput |> readinput |> placetiles |> flipall(100) |> blacksideups
