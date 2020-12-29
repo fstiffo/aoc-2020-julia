@@ -1,7 +1,6 @@
-filter_lf(s) = filter(c -> c ≠ '\n', collect(s))
-
-
 # First Half
+
+filter_lf(s) = filter(c -> c ≠ '\n', collect(s))
 
 sumcounts1(strs) = map(length ∘ unique ∘ sort ∘ filter_lf, strs) |> sum
 # For each group, count the number of questions to which ANYONE answered "yes"
@@ -27,4 +26,4 @@ puzzleinput = open("inputs/day06.txt") do f
     split(read(f, String),"\n\n")
 end
 
-sumcounts2(puzzleinput) 
+sumcounts2(puzzleinput)
