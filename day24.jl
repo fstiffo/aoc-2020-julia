@@ -116,6 +116,7 @@ function flipall!(tiles, times)
 
         for t in toflip
             # The rules are applied simultaneously to every tile
+            
             tiles[t] = !tiles[t]
         end
     end
