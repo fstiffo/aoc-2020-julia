@@ -3,12 +3,28 @@ filter_lf(s) = filter(c -> c ≠ '\n', collect(s))
 
 # First Half
 
-countsum(strs) = map(length ∘ unique ∘ sort ∘ filter_lf, strs) |> sum
-# For each group, count the number of questions to which anyone answered "yes"
+sumcounts1(strs) = map(length ∘ unique ∘ sort ∘ filter_lf, strs) |> sum
+# For each group, count the number of questions to which ANYONE answered "yes"
 # and then sum those counts
 
 puzzleinput = open("inputs/day06.txt") do f
     split(read(f, String),"\n\n")
 end
 
-countsum(puzzleinput)
+sumcounts1(puzzleinput)
+
+
+# Second Half
+
+spliton_lf(s) = split(s, "\n") |> collect
+intersect_qs(cs) = foldl(intersect, cs, init = collect('a':'z'))
+
+sumcounts2(strs) = map(length ∘ intersect_qs ∘ spliton_lf, strs) |> sum
+# For each group, count the number of questions to which EVERYONE answered "yes"
+# and the sum those counts
+
+puzzleinput = open("inputs/day06.txt") do f
+    split(read(f, String),"\n\n")
+end
+
+sumcounts2(puzzleinput) 
