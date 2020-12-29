@@ -66,7 +66,7 @@ function placetiles(instrs)
     tiles
 end
 
-blacksideups(tiles) = count(t -> t[2], tiles)
+blacksideups(tiles) = count(values(tiles))
 
 
 # First Half
