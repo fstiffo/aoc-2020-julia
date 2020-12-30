@@ -8,5 +8,6 @@ exprpt = readdlm("inputs/day01.txt", Int)
 
 
 # Second Half
+
 exprpt = readdlm("inputs/day01.txt", Int)
 [i * j * k for (i, j, k) in Iterators.product(exprpt, exprpt, exprpt) if i + j + k == 2020][1]
