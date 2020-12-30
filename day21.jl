@@ -4,7 +4,7 @@ Ingredient = String
 Allergen = String
 
 Ingredients = Set{Ingredient}
-Allergens = Set{Ingredient}
+Allergens = Set{Allergen}
 Foods = Vector{@NamedTuple{ingrs::Ingredients, allrgs::Allergens}}
 
 function readinput(strs)
