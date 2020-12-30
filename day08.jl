@@ -26,9 +26,7 @@ function execute(cpu, prg)
             return cpu
         end
 
-        ops = prg[pc, 1]
-        arg = prg[pc, 2]
-        flg = prg[pc, 3]
+        ops, arg, flg = prg[pc, 1:3]
 
         if flg
             # If the code is going to execute an instruction already executed
