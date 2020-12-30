@@ -50,7 +50,7 @@ function foundsin!(allergens, foods)
 end
 
 puzzleinput = readlines("inputs/day21.txt")
-(ingredients, allergens, foods) = readinput(puzzleinput)
+ingredients, allergens, foods = readinput(puzzleinput)
 
 cancontain = foundsin!(allergens, foods)
 cantcontain = setdiff(ingredients, cancontain)
@@ -89,7 +89,7 @@ function whichinwhich!(allergens, foods)
 end
 
 puzzleinput = readlines("inputs/day21.txt")
-(_, allergens, foods) = readinput(puzzleinput)
+_, allergens, foods = readinput(puzzleinput)
 
 cancontain = whichinwhich!(allergens, foods)
 join(getfield.(collect(cancontain), 2), ",")
