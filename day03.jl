@@ -15,8 +15,8 @@ function treesencountered1(tmap)
     # discrete plane is x = m * y mod mapₗ, where x, y are integers,
     # slope m is a rational and m * y is rounded to the nearest integer.
     # In our case m = mₕ / mᵥ (right slope / down slope) and the path is not
-    # this line, #but only the dots# on this line with vertical coordinate
-    # multiple of dm (jumping).
+    # this line, but only the dots on this line with vertical coordinate
+    # multiple of mᵥ (jumping).
 
     mₕ = 3
     mᵥ = 1
@@ -41,10 +41,11 @@ function treesencountered2(tmap)
     M = collect(zip(mₕ, mᵥ))
     mapₕ, mapₗ = size(tmap)
     f(m) = y -> tmap[y+1, Int(m[1] // m[2] * y)%mapₗ+1]
-    prod([count(f(m), 0:m[2]:mapₕ-1) for m in M])
+    [count(f(m), 0:m[2]:mapₕ-1) for m in M]
 end
 
 puzzleinput = readlines("inputs/day03.txt")
 treesmap = readinput(puzzleinput)
 
-treesencountered2(treesmap)
+prod(treesencountered2(treesmap))
+# Multiply together the number of trees encountered on each of the listed slopes
