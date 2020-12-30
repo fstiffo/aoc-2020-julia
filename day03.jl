@@ -22,11 +22,29 @@ function treesencountered1(tmap)
     mᵥ = 1
     m = mₕ // mᵥ
     mapₕ, mapₗ = size(tmap)
-    f(y) = tmap[y, Int(m * (y - 1))%mapₗ+1] # Arrays in Julia start from 1
-    count(f, 1:mᵥ:mapₕ)
+    f(y) = tmap[y+1, Int(m * y)%mapₗ+1] # Arrays in Julia start from 1
+    count(f, 0:mᵥ:mapₕ-1) # Arrays in Julia start from 1
 end
 
 puzzleinput = readlines("inputs/day03.txt")
 treesmap = readinput(puzzleinput)
 
 treesencountered1(treesmap)
+
+
+# Second Half
+
+function treesencountered2(tmap)
+
+    mₕ = [1, 3, 5, 7, 1]
+    mᵥ = [1, 1, 1, 1, 2]
+    M = collect(zip(mₕ, mᵥ))
+    mapₕ, mapₗ = size(tmap)
+    f(m) = y -> tmap[y+1, Int(m[1] // m[2] * y)%mapₗ+1]
+    prod([count(f(m), 0:m[2]:mapₕ-1) for m in M])
+end
+
+puzzleinput = readlines("inputs/day03.txt")
+treesmap = readinput(puzzleinput)
+
+treesencountered2(treesmap)
