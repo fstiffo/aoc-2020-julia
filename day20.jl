@@ -94,7 +94,7 @@ for i in CartesianIndices(combs)
     end
 end
 
-bigimg = Matrix{Int}(undef, 12, 12)
+bigimg_v = Matrix{Int}(undef, 12, 12)
 
 function placecorners!(G, bigimg)
     # Find and place corners of the grapgh on the corners of the big picture Matrix
@@ -159,14 +159,99 @@ function placeinsides!(G, bigimg)
     end
 end
 
+const N, E, S, W = 1, 2, 3, 4
 
-placecorners!(G,bigimg)
-placesides!(G,bigimg)
-placeinsides!(G,bigimg)
+const edge = [[1, :], [:, 10], [10, :], [:, 1]]
+# N, E, S, W edges of a tile
+
+const offset = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+# N, E, S ,W offset of facing tiles
+
+const opposite = [S,W,N,E]
+# N, E, S, W opposites
 
 
+function matchsides(tile₁, dir₁, tile₂)
+    for tile in D8(tile₂)
+        e = edge[dir₁]
+        oe = edge[opposite[dir₁]]
+        if tile₁[e...] == tile[oe...]
+            return tile
+        end
+    end
+    nothing
+end
 
 
+function orientsides!(bigimg)
+    maxr, maxc = size(bigimg)
+
+    for c ∈ 1:maxc - 1
+        loc = (1, c)
+        facingloc = loc .+ offset[E]
+        bigimg[facingloc...] = matchsides(bigimg[loc...], E, bigimg[facingloc...])
+    end
+    # North side
+
+    for r ∈ 1:maxr - 1
+        loc = (r, maxc)
+        facingloc = loc .+ offset[S]
+        bigimg[facingloc...] = matchsides(bigimg[loc...], S, bigimg[facingloc...])
+    end
+    # East side
+
+    for c ∈ maxc:-1:2
+        loc = (maxr, c)
+        facingloc = loc .+ offset[W]
+        bigimg[facingloc...] = matchsides(bigimg[loc...], W, bigimg[facingloc...])
+    end
+    # North side
+
+    for r ∈ maxr:-1:2
+        loc = (r, maxc)
+        facingloc = loc .+ offset[N]
+        bigimg[facingloc...] = matchsides(bigimg[loc...], N, bigimg[facingloc...])
+    end
+    # West side
+
+end
+
+
+function matchsides(tile₁, dir₁, tile₂, dir₂, tile₃)
+    for tile in D8(tile₃)
+        e₁ = edge[dir₁]
+        oe₁ = edge[opposite[dir₁]]
+        e₂ = edge[dir₂]
+        oe₂ = edge[opposite[dir₂]]
+        if tile₁[e₁...] == tile[oe₁...] && tile₂[e₂...] == tile[oe₂...]
+            return tile
+        end
+    end
+    nothing
+end
+
+function orientinsides!(bigimg)
+    maxr, maxc = size(bigimg)
+    for r ∈ 2:maxr - 1
+        for c ∈ 1:maxc - 2
+            loc₁ = (r, c)
+            facingloc = loc₁ .+ offset[E]
+            loc₂ = facingloc .+ offset[N]
+            bigimg[facingloc...] = matchsides(bigimg[loc₁...], E, bigimg[loc₂...], S, bigimg[facingloc...])
+        end
+    end
+end
+
+
+placecorners!(G, bigimg_v)
+placesides!(G, bigimg_v)
+placeinsides!(G, bigimg_v)
+
+bigimg_t = map(v -> tiles[v], bigimg_v)
+
+orientsides!(bigimg_t)
+orientinsides!(bigimg_t)
+ 
 
 
 
@@ -265,3 +350,10 @@ placeinsides!(G,bigimg)
 
 # Juno.@enter solve(images)
 # sort(unique(keys(s)))    
+
+puzzleinput = open("inputs/day20.txt") do file
+    strip(read(file, String))
+end
+
+count(c -> c == '#', puzzleinput) - 15 * 32
+ 
