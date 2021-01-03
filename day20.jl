@@ -114,6 +114,8 @@ stack = [(root, (0, 0))]
 locs = Dict((0, 0) => root)
 
 while !isempty(stack)
+    # Place the tiles on a grid, starting from root
+
     id₁, loc = pop!(stack)
     v₁ = vrtcs[id₁]
     for v₂ ∈ neighbors(G, v₁)
@@ -130,10 +132,12 @@ while !isempty(stack)
 end
 
 bigsz = Int(sqrt(length(images)))
-bigimg = BitArray(undef, bigsz * 8, bigsz * 8) 
-# 8 and not 10 because the borders of each tile are not part of the actual image
+bigimg = BitArray(undef, bigsz * 8, bigsz * 8)
+# bigimag will contain the final image; its size is bigsz * 8 and not bigsz * 10,
+# because the borders of each tile are not part of the actual image
 
 offsetrc = (minimum([r for (r, _) ∈ keys(locs)]), minimum([c for (_, c) ∈ keys(locs)]))
+# The root tile not necessary is at 1,1 position
 
 for i ∈ 0:bigsz - 1
     for j ∈ 0:bigsz - 1
@@ -162,12 +166,11 @@ mask = BitArray(map(c -> c == '#', hcat(monster)))
 
 function countmonsters(big)
     s = 0
-    masksz = size(mask)
-    max = size(big) .- masksz .+ 1
+    masksz = size(mask) .- 1
+    max = size(big) .- masksz
     for i in 1:max[1]
         for j in 1:max[2]
-            masked = big[i:i + masksz[1] - 1,j:j + masksz[2] - 1]
-            m = (masked .>= mask)
+            masked = big[i:i + masksz[1],j:j + masksz[2]]
             if all(masked .>= mask)
                 s += 1
             end
