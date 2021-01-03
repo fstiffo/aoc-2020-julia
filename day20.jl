@@ -137,7 +137,7 @@ bigimg = BitArray(undef, bigsz * 8, bigsz * 8)
 # because the borders of each tile are not part of the actual image
 
 offsetrc = (minimum([r for (r, _) ∈ keys(locs)]), minimum([c for (_, c) ∈ keys(locs)]))
-# The root tile not necessary is at 1,1 position
+# The root tile not necessarily is at top,left corner of the big image matrix
 
 for i ∈ 0:bigsz - 1
     for j ∈ 0:bigsz - 1
