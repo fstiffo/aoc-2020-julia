@@ -87,6 +87,9 @@ for i in CartesianIndices(combs)
 end
 
 prod(ids[degree(G) .== 2])
+# Tiles at the edge of the image also have this border, 
+# but the outermost edges won't line up with any other tiles.
+# It follows that each corner tile had only 2 tiles that match its edges.
 
 
 # Second Half
@@ -109,12 +112,12 @@ for i in CartesianIndices(combs)
     end
 end
 
-root, _ = first(images)
+root, _ = first(images) # Anyone will be to start...
 stack = [(root, (0, 0))]
 locs = Dict((0, 0) => root)
 
 while !isempty(stack)
-    # Place the tiles on a grid, starting from root
+    # Place the tiles on a grid, starting from root 
 
     id₁, loc = pop!(stack)
     v₁ = vrtcs[id₁]
@@ -171,7 +174,7 @@ function countmonsters(big)
     for i in 1:max[1]
         for j in 1:max[2]
             masked = big[i:i + masksz[1],j:j + masksz[2]]
-            if all(masked .>= mask)
+            if all(masked .≥ mask)
                 s += 1
             end
         end
