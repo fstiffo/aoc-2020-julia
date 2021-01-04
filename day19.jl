@@ -14,7 +14,7 @@ end
 
 function parse_line!(rules, l)
     s = split(l, ":")
-    rules[parse(Int, s[1])+1] = parse(Rule, s[2])
+    rules[parse(Int, s[1]) + 1] = parse(Rule, s[2])
 end
 
 mutable struct State
@@ -23,7 +23,8 @@ mutable struct State
 end
 
 function topdown(rules, str)
-
+    # Top down parser 
+    
     posslst = [State([1], 1)]
     # Set up possibility list
 

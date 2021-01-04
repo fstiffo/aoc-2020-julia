@@ -1,14 +1,14 @@
 const TreesMap = BitArray{2}
 
 function readinput(strs)
-    TreesMap(transpose(hcat([[c == '#' for c in l] for l in strs]...)))
+    TreesMap(transpose(hcat([[c == '#' for c ∈ l] for l ∈ strs]...)))
 end
 
 
 # First Half
 
-function treesencountered1(tmap)
-    #= 
+function treesencountered₁(tmap)
+    #= =========================================================================
     The trees map of the problem can be projected on cilindrical discrete plane
     where cilinder's height and perimeter are respectively mapₕ and mapₗ.
     The movement happens on a line on a discrete plane.
@@ -18,36 +18,36 @@ function treesencountered1(tmap)
     In our case m = mₕ / mᵥ (right slope / down slope) and the path is not
     this line, but only the dots on this line with vertical coordinate
     multiple of mᵥ (jumping).
-    =#
+    ========================================================================= =#
         
     mₕ = 3
     mᵥ = 1
     m = mₕ // mᵥ
     mapₕ, mapₗ = size(tmap)
-    f(y) = tmap[y+1, Int(m * y)%mapₗ+1] # Arrays in Julia start from 1
-    count(f, 0:mᵥ:mapₕ-1) # Arrays in Julia start from 1
+    f(y) = tmap[y + 1, Int(m * y) % mapₗ + 1] # Arrays in Julia start from 1
+    count(f, 0:mᵥ:mapₕ - 1) # Arrays in Julia start from 1
 end
 
 puzzleinput = readlines("inputs/day03.txt")
 treesmap = readinput(puzzleinput)
 
-treesencountered1(treesmap)
+treesencountered₁(treesmap)
 
 
 # Second Half
 
-function treesencountered2(tmap)
+function treesencountered₂(tmap)
 
     mₕ = [1, 3, 5, 7, 1]
     mᵥ = [1, 1, 1, 1, 2]
     M = collect(zip(mₕ, mᵥ))
     mapₕ, mapₗ = size(tmap)
-    f(m) = y -> tmap[y+1, Int(m[1] // m[2] * y)%mapₗ+1]
-    [count(f(m), 0:m[2]:mapₕ-1) for m in M]
+    f(m) = y -> tmap[y + 1, Int(m[1] // m[2] * y) % mapₗ + 1]
+    [count(f(m), 0:m[2]:mapₕ - 1) for m ∈ M]
 end
 
 puzzleinput = readlines("inputs/day03.txt")
 treesmap = readinput(puzzleinput)
 
-prod(treesencountered2(treesmap))
+prod(treesencountered₂(treesmap))
 # Multiply together the number of trees encountered on each of the listed slopes

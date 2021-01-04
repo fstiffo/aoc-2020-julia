@@ -7,7 +7,7 @@ function rowcol(s)
     colpart = s[8:end]
     colpart = replace(colpart, "R" => "1")
     colpart = replace(colpart, "L" => "0")
-    rowbin, colbin = parse(UInt8, rowpart, base = 2), parse(UInt8, colpart, base = 2)
+    rowbin, colbin = parse(UInt8, rowpart, base=2), parse(UInt8, colpart, base=2)
     Int.((rowbin & UInt(127), colbin & UInt(7)))
 end
 
@@ -33,7 +33,7 @@ function missingid(strs)
 
     sorted_ids = map(seatid, rowcols) |> sort
     for (i, id) in enumerate(sorted_ids)
-        if sorted_ids[i+1] ≠ id + 1
+        if sorted_ids[i + 1] ≠ id + 1
             # Missing ID found
 
             return id + 1

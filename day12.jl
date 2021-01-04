@@ -41,7 +41,7 @@ function handle1(s::Ship, i::Instr)
     Ship(s.pos + v, s.dir)
 end
 
-wherelead = reduce(handle1, puzzleinput, init = ship)
+wherelead = reduce(handle1, puzzleinput, init=ship)
 
 sum(map(abs, wherelead.pos))
 
@@ -73,6 +73,6 @@ end
 waypoint = ship.pos + [10, 1]
 # The waypoint starts 10 units east and 1 unit north relative to the ship.
 
-wherelead = reduce(handle2, puzzleinput, init = (ship, waypoint))
+wherelead = reduce(handle2, puzzleinput, init=(ship, waypoint))
 
 sum(map(abs, wherelead[1].pos))

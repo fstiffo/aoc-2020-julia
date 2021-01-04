@@ -26,7 +26,7 @@ function readinput(strs)
 end
 
 
-# Firts Half
+# Firts Half 
 
 function foundsin!(allergens, foods)
     foundsin = Ingredients()
@@ -55,7 +55,7 @@ ingredients, allergens, foods = readinput(puzzleinput)
 cancontain = foundsin!(allergens, foods)
 cantcontain = setdiff(ingredients, cancontain)
 
-sum(s -> length(s.ingrs ∩ cantcontain), foods)
+sum(f -> length(f.ingrs ∩ cantcontain), foods)
 
 
 # Second Half

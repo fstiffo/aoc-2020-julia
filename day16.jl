@@ -70,7 +70,7 @@ function fldspos(tix, rngs, fldrngs)
         # if satisfy the ranges for field f
 
         col = hcat(tickets...)[c, :]
-        #Select column c of the matrix
+        # Select column c of the matrix
 
         foldl(&, [v ∈ f.rng[1] || v ∈ f.rng[2] for v in col])
     end

@@ -18,7 +18,7 @@ function readinput(a::Array{Any,2})
         if lbl == "mask"
             push!(progs, Program(val, []))
         else
-            adr = parse(Int, lbl[5:end-1])
+            adr = parse(Int, lbl[5:end - 1])
             push!(progs[end].instrs, (adr = adr, val = val))
         end
     end
@@ -34,12 +34,12 @@ Base.:|(mc::Char, c::Char) = (mc == 'X') ? c : mc
 # Redefines | operator on chars to work as the mask
 # described in the 1st half of the puzzle
 
-function execute1(progs)
+function execute₁(progs)
     # Executes all the programs in progs filling the memory,then returns it
 
     function masked(mask::String, n::UInt64)
         s = collect(bitstring(n)[29:end])
-        parse(UInt64, String(collect(mask) .| s), base = 2)
+        parse(UInt64, String(collect(mask) .| s), base=2)
     end
 
     mem = Dict()
@@ -52,7 +52,7 @@ function execute1(progs)
 end
 
 
-mem = execute1(progs)
+mem = execute₁(progs)
 
 sumofvals = let acc = 0
     for (adr, val) in mem
@@ -76,7 +76,7 @@ end
 # Redefines & operator on chars to work as the mask
 # described in the 2nd half of the puzzle
 
-function execute2(progs)
+function execute₂(progs)
     # Executes all the programs in progs filling the memory,then returns it
 
     function apply(mask::String, n::UInt64)
@@ -105,10 +105,10 @@ function execute2(progs)
                 if isnothing(pos)
                     break
                 end
-                s = s[1:pos-1] * "$(d[i])" * s[pos+1:end]
+                s = s[1:pos - 1] * "$(d[i])" * s[pos + 1:end]
                 i += 1
             end
-            push!(pool, parse(UInt64, s, base = 2))
+            push!(pool, parse(UInt64, s, base=2))
             # The built address is added to the pool
 
         end
@@ -128,7 +128,7 @@ function execute2(progs)
     mem
 end
 
-mem = execute2(progs)
+mem = execute₂(progs)
 
 sumofvals = let acc = 0
     for (adr, val) in mem

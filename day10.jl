@@ -33,12 +33,12 @@ paths = BitArray(
     j > i for i = 1:len, j = 1:len
 )
 # Create a diagonal matrix for the cartesian product of joltages
-# but where (i, j) value is
+# but where (i, j) value is:
 #   1 if joltage(i) - joltage(j) < 3, there is a possible electrical connection
 #   0 otherwise, no possible connection
-# Lower part of the diagonal matrix is set to 0 (condition j > i)
+# Lower part of the diagonal matrix (j > i) is set to 0 
 
-sums = sum(paths, dims = 2)[:, 1]
+sums = sum(paths, dims=2)[:, 1]
 # For every joltage calculates how many possible connections,
 # of course the min is 1 and the max is 3 (condition of max 3 jolt o diff)
 

@@ -106,7 +106,7 @@ function recursivecombat!(player₁::Deck, player₂::Deck)
 
         winner = isempty(p₁) ? 2 : 1
         if game > 1
-            return winner
+            return winner 
         else
             println()
             println()

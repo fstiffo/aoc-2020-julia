@@ -16,7 +16,7 @@ const transfnum = 20201227
 
 function findloopzise(pbk)
     val = 1
-    for i in 1:typemax(Int)
+    for i ∈ 1:typemax(Int)
         # To transform a subject number (subjectnum), start with the value 1.
         # Then, a number of times called the loop size, perform the following steps:
 
@@ -46,7 +46,7 @@ function findencriptkey(cardpbk, doorpbk)
 
     subjectnum = doorpbk
     encriptkey₁ = 1
-    for i in 1:cardloopsize
+    for i ∈ 1:cardloopsize
         # The card transforms the subject number of the door's public key
         # according to the card's loop size. The result is the encryption key.
 
@@ -56,7 +56,7 @@ function findencriptkey(cardpbk, doorpbk)
 
     subjectnum = cardpbk
     encriptkey₂ = 1
-    for i in 1:doorloopsize
+    for i ∈ 1:doorloopsize
         # Transforming the subject number of cardpbk (the card's public key)
         # with a loop size of doorloopsize produces the encryption key
 
@@ -66,4 +66,4 @@ function findencriptkey(cardpbk, doorpbk)
     return encriptkey₁, encriptkey₂
 end
 
- findencriptkey(cardpbk, doorpbk)
+findencriptkey(cardpbk, doorpbk)

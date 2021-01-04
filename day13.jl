@@ -25,6 +25,16 @@ waittimes[1, 1] * waittimes[1, 2]
 
 # Second Half
 
+#= =======================================================================
+This solution cames from an original idea of a friend of mines, 
+Matteo Bernardini:
+
+https://github.com/matteberna/advent-of-code-2020/blob/master/Solutions/Day13.cs
+
+Thx Whiskee!
+======================================================================== =#
+
+
 function findets(tt)
     ids = filter((!) ∘ isnothing, tt)
 
@@ -34,7 +44,7 @@ function findets(tt)
     dt = 1
     t = ids[1]
 
-    for (i,id) in enumerate(ids)
+    for (i, id) in enumerate(ids)
         while true
             if (t + departs[i]) % id == 0
                 dt *= id

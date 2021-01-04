@@ -17,11 +17,11 @@ function readinput(str)
     tiles = Tiles()
 
     blocks = split(str, "\n\n")
-    for b in blocks
+    for b ∈ blocks
         bls = split(b, "\n")
         m = match(r"Tile (\d+):", bls[1])
         n = parse(Int, m[1])
-        tiles[n] = Tile(hcat([[c == '#' for c in l] for l in bls[2:end]]...)')
+        tiles[n] = Tile(hcat([[c == '#' for c ∈ l] for l ∈ bls[2:end]]...)')
     end
     tiles
 end
@@ -171,8 +171,8 @@ function countmonsters(big)
     s = 0
     masksz = size(mask) .- 1
     max = size(big) .- masksz
-    for i in 1:max[1]
-        for j in 1:max[2]
+    for i ∈ 1:max[1]
+        for j ∈ 1:max[2]
             masked = big[i:i + masksz[1],j:j + masksz[2]]
             if all(masked .≥ mask)
                 s += 1

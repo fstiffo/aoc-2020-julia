@@ -1,5 +1,4 @@
 using LightGraphs
-using GraphPlot
 using DataStructures
 
 function readinput(strs)
@@ -89,7 +88,7 @@ function howmany_inside(rules, color)
         end
         count = sum(counter(contents))
 
-        for (c,q) in contents
+        for (c, q) in contents
             count += q * howmany_inside(c)
         end
         return count

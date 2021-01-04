@@ -5,27 +5,26 @@ import Base.~
 
 # First Half
 
-const maxlbl1 = 9
-
-~(x::Int, y::Int) = mod1(x - y, maxlbl1) # Circular subtraction
+const maxlbl₁ = 9
+~(x::Int, y::Int) = mod1(x - y, maxlbl₁) # Circular subtraction
 
 function simulate1!(cups, moves)
 
-    function place(cups, pickup, pckpos, destination)
+    function place(cups, pickup, destination)
         t = Vector(cups)
         for p in pickup
             pckpos = findfirst(x -> x == p, t)
             deleteat!(t, pckpos)
         end
         destpos = findfirst(x -> x == destination, t)
-        CircularVector([t[1:destpos]; pickup; t[destpos+1:end]])
+        CircularVector([t[1:destpos]; pickup; t[destpos + 1:end]])
     end
 
     current = cups[1]
     destination = 0
     for m = 1:moves
         currpos = findfirst(x -> x == current, cups)
-        pickup = cups[currpos+1:currpos+3]
+        pickup = cups[currpos + 1:currpos + 3]
         # Step 1 - The crab picks up the three cups that are immediately
         # clockwise of the current cup. They are removed from the circle;
 
@@ -55,7 +54,7 @@ function simulate1!(cups, moves)
         # order as when they were picked up.
 
         currpos = findfirst(x -> x == current, cups)
-        current = cups[currpos+1]
+        current = cups[currpos + 1]
         # Step 4 - The crab selects a new current cup: the cup which is
         # immediately clockwise of the current cup.
     end
@@ -69,29 +68,28 @@ simulate1!(puzzleinput, 101)
 
 # Second Half
 
-const maxlbl2 = 1000000
-
-~(x::Int, y::Int) = mod1(x - y, maxlbl2) # Circular subtraction
+const maxlbl₂ = 1000000
+~(x::Int, y::Int) = mod1(x - y, maxlbl₂) # Circular subtraction
 
 function simulate2!(labeling, moves)
 
-    cups = collect([2:maxlbl2+1]...)
+    cups = collect([2:maxlbl2 + 1]...)
     labeling = [labeling; length(labeling) + 1]
-    for i = 1:9
+    for i ∈ 1:9
         n = labeling[i]
-        nx = labeling[i+1]
+        nx = labeling[i + 1]
         cups[n] = nx
     end
     cups[maxlbl2] = labeling[1]
     # The cups array store at position n the label of the cup immediately
-    # clockwise of cup labeled n, that make all so simple!
+    # clockwise of cup labeled n, that makes all so simple!
 
 
     cur = labeling[1]
     des = 0
     pck = [0, 0, 0]
     for m = 1:moves
-        pck[1] = cups[cur]
+        pck[1] = cups[cur]s
         pck[2] = cups[pck[1]]
         pck[3] = cups[pck[2]]
         # Step 1 - The crab picks up the three cups that are immediately

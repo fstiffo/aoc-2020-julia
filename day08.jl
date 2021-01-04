@@ -13,7 +13,7 @@ program = hcat(puzzleinput, fill(false, (size(puzzleinput)[1], 1)))
 
 function execute(cpu, prg)
     eop = length(prg[:, 1:1])
-    # address of the last line of the program
+    # Address of the last line of the program
 
     while true
         # Execution loop

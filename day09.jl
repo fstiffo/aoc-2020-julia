@@ -5,7 +5,7 @@ function givessum(list, sum)
     # returns nothing is there is no one that satisfies
 
     for (i, n) in enumerate(list)
-        for m in list[i+1:end]
+        for m in list[i + 1:end]
             if n + m == sum
                 return n, m
             end
@@ -17,8 +17,8 @@ end
 function firstinvalid(list, pmblsz)
     # Returns first invalid number, if none returns nothing.
 
-    for (i, n) in enumerate(list[pmblsz+1:end])
-        if isnothing(givessum(list[i:i+pmblsz-1], n))
+    for (i, n) ∈ enumerate(list[pmblsz + 1:end])
+        if isnothing(givessum(list[i:i + pmblsz - 1], n))
             # XMAS starts by transmitting a preamble of pmblsz numbers.
             # After that, each number you receive should be the sum of any two of
             # the pmblsz immediately previous numbers.
@@ -44,8 +44,8 @@ function findweakness(list, pmblsz)
 
     invalnum = firstinvalid(list, pmblsz)
     if !isnothing(invalnum)
-        for i in 1:length(list)-1
-            for j in i+1:length(list)
+        for i ∈ 1:length(list) - 1
+            for j ∈ i + 1:length(list)
                 contigset = list[i:j]
                 if sum(contigset) == invalnum
                     # Find a contiguous set of at least two numbers in your list

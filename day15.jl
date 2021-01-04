@@ -6,10 +6,10 @@ function play(startingnums, numofturns)
 
     spoken = fill(-1, numofturns)
 
-    for i in eachindex(startingnums[1:end-1])
-        spoken[startingnums[i]+1] = i
+    for i in eachindex(startingnums[1:end - 1])
+        spoken[startingnums[i] + 1] = i
     end
-    # Preparation of the game: every elf says is number that is the puzzleinput
+    # Preparation of the game: every elf says his number that is the puzzleinput
 
     lstspkn = last(startingnums)
     turn = length(startingnums)
@@ -17,16 +17,16 @@ function play(startingnums, numofturns)
     while true
         # Game loop
 
-        newnumber = spoken[lstspkn+1] > 0 ? turn - spoken[lstspkn+1] : 0
+        newnumber = spoken[lstspkn + 1] > 0 ? turn - spoken[lstspkn + 1] : 0
         # Had the last number spoken also been spoken before?
 
-        # Yes, then the next number to speak is the difference between
+        # YES: then the next number to speak is the difference between
         # the turn number when it was last spoken (actual turn - 1) and
         # the turn number the time it was most recently spoken before then
 
-        # No, is a new numbers then the elf says "0"
+        # NO: is a new numbers then the elf says "0"
 
-        spoken[lstspkn+1] = turn
+        spoken[lstspkn + 1] = turn
         lstspkn = newnumber
         # Now the elf says the number
 
