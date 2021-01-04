@@ -21,7 +21,7 @@ function readinput(str)
         bls = split(b, "\n")
         m = match(r"Tile (\d+):", bls[1])
         n = parse(Int, m[1])
-        tiles[n] = Tile(transpose(hcat([[c == '#' for c in l] for l in bls[2:end]]...)))
+        tiles[n] = Tile(hcat([[c == '#' for c in l] for l in bls[2:end]]...)')
     end
     tiles
 end
