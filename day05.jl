@@ -15,7 +15,6 @@ seatid((row, col)) = row * 8 + col
 # Every seat also has a unique seat ID: multiply the row by 8, then add the column
 
 
-
 # First Half
 
 puzzeinput = readlines("inputs/day05.txt")
